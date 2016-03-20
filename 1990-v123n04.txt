@@ -1,0 +1,64 @@
+Title
+Volume 123, Number 04
+1990-10-23
+Subtitle
+
+-ARTICLES-
+Article 1 Name
+This is the Second Article
+The Third Article is One Which has a Very Long Title: And a Subtitle to Boot
+
+-CONTRIBUTORS-
+EDITOR IN CHIEF
+Editor InChief
+MANAGING EDITOR
+Manage N.G. Editor
+EXECUTIVE EDITOR
+Exec U. Tiv
+WRITERS
+Ernest Hemingway
+Charles Dickens
+Stephen King
+Jane Austin
+Ed Poe
+Mark Twain
+James Joyce
+NEWS EDITOR
+Edward R. Murrow
+NEWS WRITERS
+James Agee
+Christiane Amanpour
+James Baldwin
+ENTERTAINMENT EDITOR
+Alan Coren
+ENTERTAINMENT WRITERS
+Russel Baker
+SPORTS EDITOR
+John Anderson
+SPORTS WRITERS
+Matt Barrie
+Chris Berman
+Max Bretos
+Nicole Briscoe
+ILLUSTRATOR
+Herbert Block
+ART DIRECTOR
+Leonardo DaVinci
+PRODUCTION MANAGERS
+Pro Duct Manager
+PRODUCTION STAFF
+John Doe
+PHOTO EDITOR
+Jane Doe
+CHIEF PHOTOGRAPHER
+Robert Capa
+PHOTOGRAPHERS
+Ansel Adams
+Henri Cartier-Bresson
+Dorothea Lange
+ADVERTISING MANAGER
+Don Draper
+BUSINESS MANAGER
+Andrew Carnegie
+ADVISOR
+Benjamin Franklin
