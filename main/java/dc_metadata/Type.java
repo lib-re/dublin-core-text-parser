@@ -1,12 +1,12 @@
 package dc_metadata;
 
 /**
- * Created by admin on 4/5/16.
+ * Abstract class for a Type element.
  */
-public abstract class Type extends Element{
+public class Type extends Element{
 
-    //acceptable element types
-    public enum qualifier {
+    //acceptable values
+    public enum value {
         ABSTRACT, ANIMATION, ARTICLE,
         BLOG, BOOK, BOOK_CHAPTER, BOOK_REVIEW,
         CAPSTONE, CASE_STUDY,
@@ -25,20 +25,29 @@ public abstract class Type extends Element{
         WEBSITE, WORKING_PAPER
     }
 
-    public Type(){
+    /**
+     * private constructor used to set the type header's
+     */
+    private Type(){
 
         uri = "http://purl.org/dc/elements/1.1/type";
         name = "type";
         label = "Type";
         definiton = "The nature or genre of the content of the resource";
-        comment = "Recommended best practice is to use a controlled vocabulary " +
-                "such as the DCMI Type Vocabulary [DCMITYPE]. To describe the " +
-                "file format, physical medium, or dimensions of the resource, " +
-                "use the Format element.";
     }
 
-    public Type(qualifier q){
+
+    /**
+     * Create a 'Type' Element of
+     */
+    public Type(value v){
         this();
-        value = q.toString();
+
+        switch (v){
+            case MAGAZINE: this.qualifier = "Magazine"; break;
+            default:
+                this.qualifier = (v.toString()).replace(" ","");
+        }
+
     }
 }

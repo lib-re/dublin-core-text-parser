@@ -24,7 +24,9 @@ public abstract class Element {
      * returns a line of xml that describes that element/qualifier/value pair
      */
     public String XMLExport(){
-        return "<dcvalue element=\"" + name + "\"" + "qualifier=\"" + qualifier + "\">" + value + "</dcvalue>";
+        String toReturn = "<dcvalue element=\"" + name + "\"";
+        toReturn += (qualifier.isEmpty())? "" : "qualifier=\"" + qualifier + "\"";
+        return toReturn + ">" + value + "</dcvalue>";
     }
 
 
