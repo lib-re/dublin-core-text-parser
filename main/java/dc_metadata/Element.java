@@ -5,22 +5,35 @@ package dc_metadata;
  */
 public abstract class Element {
 
-    public String uri = "";
-    public String name = "";
-    public String label = "";
-    public String definiton = "";
-    public String comment = "";
+    //data elements pertaining to Dublin Core Documentation
+    protected String uri = "";
+    protected String name = "";
+    protected String label = "";
+    protected String definiton = "";
 
-    public String value = "";
+    //data elements relating to particular entry
+    protected String qualifier = "";
+    protected String value = "";
 
     @Override
     public String toString(){
         return "dc." + name + " | " + label + ": " + definiton;
     }
 
+    /**
+     * returns a line of xml that describes that element/qualifier/value pair
+     */
     public String XMLExport(){
-        return "<dcvalue element=\"" + name + "\">" + value + "</dcvalue>";
+        return "<dcvalue element=\"" + name + "\"" + "qualifier=\"" + qualifier + "\">" + value + "</dcvalue>";
     }
 
+
+    // - getters and setters - //
+
+    /* - qualifier - */
+    public String getQualifier() { return this.qualifier; }
+
+    /* - value - */
+    public String getValue() { return this.value; }
 
 }
