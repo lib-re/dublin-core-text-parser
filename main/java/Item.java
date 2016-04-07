@@ -1,7 +1,5 @@
-import dc_metadata.Contributor;
-import dc_metadata.Element;
-import dc_metadata.Title;
-import dc_metadata.Type;
+import dc_metadata.*;
+import sun.security.krb5.internal.crypto.Des;
 
 import java.util.ArrayList;
 
@@ -58,12 +56,12 @@ public class Item {
 
     /** add an article to the item*/
     public void addArticle(String articleTitle){
-        //TODO
+        lsElements.add( new Description(Description.qualifiers.TABLE_OF_CONTENTS, articleTitle));
     }
 
     /** add cataloguer's note regarding the item */
     public void addNote(String line) {
-        //TODO
+        lsElements.add( new Description(Description.qualifiers.NOTE, line));
     }
 
     /* - dc.date - */
