@@ -1,5 +1,6 @@
 import dc_metadata.Contributor;
 import dc_metadata.Element;
+import dc_metadata.Title;
 import dc_metadata.Type;
 
 import java.util.ArrayList;
@@ -41,11 +42,11 @@ public class Item {
     /* - dc.title - */
 
     public void addTitle(String title){
-        //TODO
+        lsElements.add(new Title(title));
     }
 
     public void addAlternativeTitle(String altTitle){
-        //TODO
+        lsElements.add(new Title(Title.qualifier.ALTERNATIVE, altTitle));
     }
 
     /* - dc.type - */

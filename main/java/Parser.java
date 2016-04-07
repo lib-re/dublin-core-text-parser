@@ -20,8 +20,6 @@ public class Parser {
     //item to be added
     private Item item = new Item(0);
 
-
-
     /**
      * Process a given file
      * @param file
