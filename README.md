@@ -92,5 +92,7 @@ _Configuration //Todo__
 
 
 **External Links**
-Dublin Core documentation: http://dublincore.org/documents/dces/
-Sample Dublin Core JSON object: https://www.w3.org/2008/WebVideo/Annotations/drafts/API10/JSON/normative_json_ma_dc.json
+
+* [Dublin Core documentation](http://dublincore.org/documents/dces/)
+* [Sample Dublin Core JSON object](https://www.w3.org/2008/WebVideo/Annotations/drafts/API10/JSON/normative_json_ma_dc.json)
+* [DSpace SimpleArchiveFormat documentation](https://wiki.duraspace.org/display/DSPACE/Simple+Archive+Format+Packager)
