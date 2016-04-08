@@ -79,7 +79,7 @@ public class Item {
 
     /** add dc.relation.isPartOfSeries element */
     public void addSeries(String part) {
-        //TODO
+        lsElements.add(new Relation(Relation.qualifier.IS_PART_OF, part));
     }
 
     public void addPublisher(String publisher) {

@@ -1,7 +1,7 @@
 package dc_metadata;
 
 /**
- * Abstract class for a Contributor element.
+ * Representation for a Contributor element.
  */
 public class Contributor extends Element {
 
