@@ -59,12 +59,12 @@ public class Parser {
 
             // - process the body - //
 
-            //if current mode is on adding articles, just add the line
+            //if current mode is adding articles, just add the line
             if(currentMode == mode.ARTICLES){
                 item.addArticle(line);
             }
 
-            //if current mode is on adding contributors...
+            //if current mode is adding contributors...
             else if(currentMode == mode.CONTRIBUTORS) {
 
                 //if we read an all caps field, switch contributor type
@@ -73,7 +73,15 @@ public class Parser {
 
                 //add appropriate contributor qualifier type
                 }else{
-                    item.addContributor(this.currentQualifier, line);
+
+                    //change "fName mName lName" -> "lName, fName mName"
+                    String[] names = line.split(" ");
+                    String lName = names[names.length-1];
+                    String fName = line.substring(0, line.length() - lName.length() - 1);
+                    String name = lName + ", " + fName;
+
+                    //add contributor with the current qualifer.
+                    item.addContributor(this.currentQualifier, name);
                 }
 
             }
