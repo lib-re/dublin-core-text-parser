@@ -26,13 +26,9 @@ Run the script to create, in that directory, the desired output/s encoded with
 Ensure that everything has been placed in the appropriate field by checking a 
   few individual item representations. 
 6. _Clean up or Reference Text Files_
-
 After completion of the above tasks, the text files can be discarded as
   irrelevant, or used as a quick reference to the metadata info along-
   side where you're storing the files themselves.
-
-I've found them particularly helpful in OSX as you can use it to easily preview the entire
-  batch of metadata without ever opening the file.
   
 **Output**
 
@@ -42,7 +38,7 @@ I've found them particularly helpful in OSX as you can use it to easily preview 
 |~~M~~|~~.mrk~~|MARC format which will likely need to be compiled into .mrc|
 | ~~X,x~~ | ~~.xml~~ |[One or many] is a commonly used in SOAP APIs |
 |~~J,j~~|~~.json~~|[One or many] is commonly used by REST APIs|
-* ... feel free to fork and create more output types or suggest different uses.
+|...|...| Feel free to fork and create more output types or suggest different uses.|
 
 
 **Notes**
