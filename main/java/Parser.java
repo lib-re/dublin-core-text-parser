@@ -73,15 +73,7 @@ public class Parser {
 
                 //add appropriate contributor qualifier type
                 }else{
-
-                    //change "fName mName lName" -> "lName, fName mName"
-                    String[] names = line.split(" ");
-                    String lName = names[names.length-1];
-                    String fName = line.substring(0, line.length() - lName.length() - 1);
-                    String name = lName + ", " + fName;
-
-                    //add contributor with the current qualifer.
-                    item.addContributor(this.currentQualifier, name);
+                    item.addContributor(this.currentQualifier, processName(line));
                 }
 
             }
@@ -131,6 +123,22 @@ public class Parser {
         item.addType(Type.value.MAGAZINE);
 
         return 1;
+    }
+
+    // - helpers - //
+
+    /**
+     * process a contributor line into a formatted line
+     *  e.g. "fName mName mInitial lName" into "lName, fName mName mInitial lName"
+     * @param line
+     * @return
+     */
+    private static String processName(String line){
+        String[] names = line.split(" ");
+        String lName = names[names.length-1];
+        String fName = line.substring(0, line.length() - lName.length() - 1);
+
+        return lName + ", " + fName;
     }
 
     // - match functions - //
