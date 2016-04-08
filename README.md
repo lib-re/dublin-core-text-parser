@@ -1,45 +1,66 @@
 **Purpose**
 
 _Short_:
-Convert dublin core metadata stored in text files to a machine-readable
-  JSON object to be used by other software.
+Convert dublin core metadata stored in text files to other machine-readable
+  formats to be used by other software.
 
 _Long_:
-Assist in cataloguing batches of similar or series-based items from a
-collection by:
- -decreasing the complexity of logging each individual item/issue
- -minimizing repetitive tying and template updating
- -combining the information that is shared across collections
+Assist in cataloguing batches of similar or series-based items from a collection by:
+* decreasing the complexity of logging each individual item/issue
+* minimizing repetitive typing and template editing
+* combining the information that is shared across items in a collection in one place
 
 **Usage Instructions**
 
 1. _Create Text File/s_
-Create a text file of the basic metadata for each issue in the collection.
-2. _Edit Config Files_
+Create a text file of the basic metadata for each item in the collection.
+2. _Edit Shared File_
 Edit the settings to include any and all shared metadata applicable to all
-  of the issues in the given batch (e.g language, publisher, etc.)
-3. _Run Script_
-Run the script to create a JSON object from each of these text files.
-4. _Check and Utilize Output_
-Using the actual json objects is out of scope for this program.
-5. _Clean up or Reference Text Files_
+  of the items in the given batch (e.g language, publisher, etc.)
+3. _Edit Config File_
+If desired, edit the configuration file to customize the format of the header
+4. _Run Script_
+Run the script to create, in that directory, the desired output/s encoded with
+  the dublin-core metadata you logged in the text files. 
+5. _Check and Utilize Output_
+Ensure that everything has been placed in the appropriate field by checking a 
+  few individual item representations. 
+6. _Clean up or Reference Text Files_
+
 After completion of the above tasks, the text files can be discarded as
   irrelevant, or used as a quick reference to the metadata info along-
   side where you're storing the files themselves.
 
+I've found them particularly helpful in OSX as you can use it to easily preview the entire
+  batch of metadata without ever opening the file.
+  
+**Output**
+
+| Flag | .ext | Description |
+|:-------|:--------:|:-----------------------------------------------------------------------------|
+| C | .csv   | output originally intended for use with [DSPace-Labs/SAFBuilder](https://github.com/DSpace-Labs/SAFBuilder)].|
+|~~M~~|~~.mrk~~|MARC format which will likely need to be compiled into .mrc|
+| ~~X,x~~ | ~~.xml~~ |[One or many] is a commonly used in SOAP APIs |
+|~~J,j~~|~~.json~~|[One or many] is commonly used by REST APIs|
+* ... feel free to fork and create more output types or suggest different uses.
+
+
 **Notes**
 
 _Uploading Original Files_
--If you'd like to upload the original files alongside cataloguing them,
+
+If you'd like to upload the original files alongside cataloguing them,
  include the filename with its tag and ensure that they are located in
  the same folder as the digital item you are trying to upload.
 
 _Collection/Grouping Determination_
--I've made how you determine how you batch the uploads entirely open to
+
+I've made how you determine how you batch the uploads entirely open to
  the user. For our purposes, I plan to use it according to the calendar
  year (~15-25 issues) but organization by volume or else would work too.
 
 **Background**
+
 This program was written to assist with my work in cataloguing and uploading
   a collection of magazines into our DSpace database. I found working with
   the web interface we were using laborious and inefficient, and the OCR
