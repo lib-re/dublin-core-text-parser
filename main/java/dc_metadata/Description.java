@@ -30,7 +30,7 @@ public class Description extends Element {
         uri = "http://purl.org/dc/elements/1.1/description";
         name = "description";
         label = "Description";
-        definiton = "An account of the resource.";
+        definition = "An account of the resource.";
     }
 
     public Description(String description){

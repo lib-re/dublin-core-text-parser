@@ -20,7 +20,7 @@ public class Title extends Element {
         uri = "http://purl.org/dc/elements/1.1/title";
         name = "title";
         label = "Title";
-        definiton = "A name given to the resource.";
+        definition = "A name given to the resource.";
     }
 
     /**

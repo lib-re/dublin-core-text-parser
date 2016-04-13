@@ -33,7 +33,7 @@ public class Type extends Element{
         uri = "http://purl.org/dc/elements/1.1/type";
         name = "type";
         label = "Type";
-        definiton = "The nature or genre of the content of the resource";
+        definition = "The nature or genre of the content of the resource";
     }
 
 

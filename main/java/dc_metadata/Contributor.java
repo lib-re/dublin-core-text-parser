@@ -33,7 +33,7 @@ public class Contributor extends Element {
         uri = "http://purl.org/dc/elements/1.1/contributor";
         name = "contributor";
         label = "Contributor";
-        definiton = "An entity responsible for making contributions to the resource.";
+        definition = "An entity responsible for making contributions to the resource.";
     }
 
     /**
@@ -42,30 +42,33 @@ public class Contributor extends Element {
     public Contributor(qualifier q, String value){
         this();
         this.value = value;
+        this.qualifier = getQualifierName(q);
+    }
+
+    private static String getQualifierName(qualifier q){
 
         switch(q){
-            case ACTOR:              this.qualifier = "actor";            break;
-            case ADVISOR:            this.qualifier = "advisor";          break;
-            case ADVISOR_CHAIR:      this.qualifier = "advisorChair";     break;
-            case ADVISOR_DEPT_CHAIR: this.qualifier = "advisorDeptChair"; break;
-            case ARTIST:             this.qualifier = "artist";           break;
-            case AUTHOR:             this.qualifier = "author";           break;
-            case DESIGNER:           this.qualifier = "designer";         break;
-            case EDITOR:             this.qualifier = "editor";           break;
-            case EDITOR_ART:         this.qualifier = "ArtEditor";        break;
-            case EDITOR_COPY:        this.qualifier = "CopyEditor";       break;
+            case ACTOR:              return "actor";
+            case ADVISOR:            return "advisor";
+            case ADVISOR_CHAIR:      return "advisorChair";
+            case ADVISOR_DEPT_CHAIR: return "advisorDeptChair";
+            case ARTIST:             return "artist";
+            case AUTHOR:             return "author";
+            case DESIGNER:           return "designer";
+            case EDITOR:             return "editor";
+            case EDITOR_ART:         return "ArtEditor";
+            case EDITOR_COPY:        return "CopyEditor";
             case EDITOR_EXECUTIVE:
-            case EDITOR_MANAGING:    this.qualifier = "ManagingEditor";   break;
-            case EDITOR_FEATURE:     this.qualifier = "FeatureEditor";    break;
-            case EDITOR_NEWS:        this.qualifier = "NewsEditor";       break;
-            case EDITOR_SPORTS:      this.qualifier = "SportsEditor";     break;
-            case ILLUSTRATOR:        this.qualifier = "illustrator";      break;
-            case MANAGER_BUSINESS:   this.qualifier = "BusinessManager";  break;
-            case PHOTOGRAPHER:       this.qualifier = "photographer";     break;
+            case EDITOR_MANAGING:    return "ManagingEditor";
+            case EDITOR_FEATURE:     return "FeatureEditor";
+            case EDITOR_NEWS:        return "NewsEditor";
+            case EDITOR_SPORTS:      return "SportsEditor";
+            case ILLUSTRATOR:        return "illustrator";
+            case MANAGER_BUSINESS:   return "BusinessManager";
+            case PHOTOGRAPHER:       return "photographer";
             default:
-                this.qualifier = "other";
+                return "other";
         }
-
     }
 
 }

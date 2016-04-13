@@ -19,7 +19,7 @@ public class Relation extends Element {
         uri = "http://purl.org/dc/elements/1.1/relation";
         name = "relation";
         label = "Relation";
-        definiton = "A related resource.";
+        definition = "A related resource.";
     }
 
     public Relation(String value){

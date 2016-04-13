@@ -9,7 +9,7 @@ public abstract class Element {
     protected String uri = "";
     protected String name = "";
     protected String label = "";
-    protected String definiton = "";
+    protected String definition = "";
 
     //data elements relating to particular entry
     protected String qualifier = "";
@@ -17,7 +17,7 @@ public abstract class Element {
 
     @Override
     public String toString(){
-        return "dc." + name + " | " + label + ": " + definiton;
+        return "dc." + name + " | " + label + ": " + definition;
     }
 
     /**
