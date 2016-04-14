@@ -36,6 +36,14 @@ public class Type extends Element{
         definition = "The nature or genre of the content of the resource";
     }
 
+    /**
+     * Create a 'Type' element the user-defined string
+     */
+    public Type(String s){
+        this();
+        this.qualifier = s;
+    }
+
 
     /**
      * Create a 'Type' Element of

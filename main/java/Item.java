@@ -1,5 +1,4 @@
 import dc_metadata.*;
-import sun.security.krb5.internal.crypto.Des;
 
 import java.util.ArrayList;
 
@@ -9,24 +8,65 @@ import java.util.ArrayList;
  */
 public class Item {
 
+    //store option strings
+    public static String DATE_ISSUED = "DATE_ISSUED";
+    public static String DESCRIPTION = "DESCRIPTION";
+    public static String FILENAME    = "FILENAME";
+    public static String FORMAT      = "FORMAT";
+    public static String IDENTIFIER  = "IDENTIFIER";
+    public static String LANGUAGE    = "LANGUAGE";
+    public static String LICENSE     = "LICENSE";
+    public static String PUBLISHER   = "PUBLISHER";
+    public static String SERIES      = "SERIES";
+    public static String SUBJECT     = "SUBJECT";
+    public static String TITLE       = "TITLE";
+    public static String TITLE_ALT   = "TITLE_ALTERNATIVE";
+    public static String TYPE        = "TYPE";
+
     //identification number in series
     public int id;
 
     //name of the file in the same directory
-    private String filename = "";
+    public String filename = "";
 
     //list of all the data Elements
     private ArrayList<Element> lsElements;
 
-    /**
-     * Create an item of a given ID with no elements.
-     */
-    public Item(int i){
-        this.id = i;
+    public Item(){
         this.lsElements = new ArrayList<Element>();
     }
 
-    // - add elements to the file - //
+    /**
+     * Create an item of a given ID and no elements.
+     */
+    public Item(int i){
+        this();
+        this.id = i;
+    }
+
+    // - add elements to the item - //
+
+    /**
+     *
+     * @param option String containing reference for
+     * @param line
+     * @return
+     */
+    public boolean addOption(String option, String line){
+
+        boolean validOption = true;
+
+        if(option == DATE_ISSUED){      this.addDateIssued(line); }
+        else if(option == DESCRIPTION){ this.addDesciption(line); }
+        else if(option == FILENAME){    this.filename = line;     }
+        else if(option == PUBLISHER){   this.addPublisher(line);  }
+        else if(option == TITLE){       this.addTitle(line);      }
+        else if(option == TITLE_ALT){   this.addAltTitle(line);   }
+        else if(option == TYPE){        this.addType(line);       }
+        else { validOption = false; }
+
+        return validOption;
+    }
 
     /**
      * add the name of the file associated with the file
@@ -43,16 +83,21 @@ public class Item {
         lsElements.add(new Title(title));
     }
 
-    public void addAlternativeTitle(String altTitle){
+    public void addAltTitle(String altTitle){
         lsElements.add(new Title(Title.qualifier.ALTERNATIVE, altTitle));
     }
 
     /* - dc.type - */
-    public void addType(Type.value value){
-        lsElements.add( new Type(value) );
+    public void addType(String type)/* throws IllegalArgumentException*/{
+        lsElements.add( new Type(type) );
     }
 
     /* - dc.description - */
+
+    /** add new basic description to the item*/
+    private void addDesciption(String line) {
+        lsElements.add( new Description(line) );
+    }
 
     /** add an article to the item*/
     public void addArticle(String articleTitle){

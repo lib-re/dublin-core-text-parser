@@ -94,7 +94,7 @@ public class Parser {
 
         switch(num){
             case 0:
-                item.addAlternativeTitle(line);
+                item.addAltTitle(line);
                 break;
             case 1:
                 String volume = line.split(",")[0];
@@ -106,7 +106,7 @@ public class Parser {
                 item.addDateIssued(line);
                 break;
             case 3:
-                item.addAlternativeTitle(line);
+                item.addAltTitle(line);
                 break;
             case 4:
                 item.addFilename(line);
@@ -116,14 +116,6 @@ public class Parser {
         return 1;
     }
 
-    /** process any fields that are shared for all items */
-    private int processShared(){
-        item.addTitle("Reporter");
-        item.addPublisher("Rochester Institute of Technology");
-        item.addType(Type.value.MAGAZINE);
-
-        return 1;
-    }
 
     // - helpers - //
 
