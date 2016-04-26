@@ -1,7 +1,8 @@
-Title
+The Title of the Item
 Volume 123, Number 04
 1990-10-23
-Subtitle
+The Subtitle of the item
+Filename_of_given_type.pdf
 
 -ARTICLES-
 Article 1 Name
