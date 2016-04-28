@@ -4,6 +4,10 @@ Volume 123, Number 04
 The Subtitle of the item
 Filename_of_given_type.pdf
 
+// this line is a comment about this particular item. 
+// this is a separate comment about this item that will be added independently of all others, since each line is viewed independently.
+// example note: Volume incorrectly marked '125' on the cover page, but title and rest of issue say 123. 
+
 -ARTICLES-
 Article 1 Name
 This is the Second Article
