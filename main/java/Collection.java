@@ -26,18 +26,42 @@ public class Collection {
 
     /**
      * Process all of the appropriate files in the given directory
-     * @param directory
+     * @param directoryPath string for absolute path of directory
      */
-    public int process(File directory) {
+    public int processDirectory(String directoryPath) {
 
-        int i = 0;
-        //for each file in the directory; i++
-            //create an empty item...
-            //add the shared items
-            //
+        File directory;
+
+        try{
+            directory = new File(directoryPath);
+
+            if(directory.isDirectory()){
+                File[] lsFiles = directory.listFiles();
+
+                if(lsFiles != null){
+                    int i = 1;
+                    for (File file : lsFiles) {
+                        Item item = new Item(i);
+
+                        //
+
+                        this.lsItems.add(item);
+                    }
+                }
+
+            }
+        }catch(Exception e){
+            return 0;
+        }
 
         return 0; //TODO
     }
+
+    public int processFile(File f){
+        return 0; //TODO
+    }
+
+    // -- CONFIG -- //
 
 
     // -- SHARED -- //

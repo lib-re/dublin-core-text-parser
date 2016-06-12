@@ -16,8 +16,9 @@ public class Main {
         Options options = new Options();
 
         //print-outs for help executing the program
-        options.addOption("d", "dublin-core", false, "display help for dublin core fields");
+        options.addOption("d", "dublin-core", false, "Display help for dublin core fields");
         options.addOption("h", "help", false, "Display the Help");
+        //options.addOption("i", "interactive", false, "Make the execution interactive");
 
         //extra files for custom execution
         options.addOption("c", "config", true, "Reference to a file containing alternative header arrangements");
@@ -39,15 +40,19 @@ public class Main {
 
 
         //print for help
-        
 
-        //process this input
+
+        /* -- process this input -- */
+
+        //set header given the contents of config file
+
+
+        //set the shared
 
 
         //export according to
 
     }
-
 
 
 }
