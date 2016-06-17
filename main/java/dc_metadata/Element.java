@@ -15,9 +15,19 @@ public abstract class Element {
     protected String qualifier = "";
     protected String value = "";
 
+    /** print out 'dc.{element_name}.{qualifier_name}: {value}' */
     @Override
-    public String toString(){
-        return "dc." + name + " | " + label + ": " + definition;
+    public final String toString(){
+
+        String toReturn = "dc." + name;
+        toReturn += (qualifier.isEmpty())? "" : qualifier + ".";
+        return toReturn + ": " + value;
+
+    }
+
+    /** print out helper text explaining the element (no qualifier) */
+    public final String helpText(){
+        return label + " | " + "dc." + name + " | " + definition;
     }
 
     /**

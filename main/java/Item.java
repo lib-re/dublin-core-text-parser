@@ -32,16 +32,27 @@ public class Item {
     //list of all the data Elements
     private ArrayList<Element> lsElements;
 
-    public Item(){
-        this.lsElements = new ArrayList<Element>();
-    }
-
     /**
      * Create an item of a given ID and no elements.
      */
     public Item(int i){
-        this();
         this.id = i;
+        this.lsElements = new ArrayList<Element>();
+    }
+
+    // - print functions - //
+    @Override
+    public final String toString(){
+        String header = "---- Item " + id + ": " + filename + " ----";
+        String toReturn = header;
+        toReturn += "\n\n";
+        for (Element e: lsElements ) {
+            toReturn += "-> " + e.toString() + "\n";
+        }
+
+        toReturn += "\n" + header + "\n";
+
+        return toReturn;
     }
 
     // - add elements to the item - //
@@ -73,7 +84,7 @@ public class Item {
      * TODO verify the file is valid, flag if it is not.
      */
     public void addFilename(String line) {
-        this.filename = line;
+        this.filename = line.trim();
     }
 
 
