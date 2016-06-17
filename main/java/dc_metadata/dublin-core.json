@@ -1,0 +1,184 @@
+[
+
+  {
+    "label":"Contributor",
+    "name":"contributor",
+    "definition":"An entity responsible for making contributions to the resource.",
+    "uri":"http://purl.org/dc/elements/1.1/contributor",
+    "refinements":
+      [
+        "actor",
+        "advisor","advisorChair","advisorDeptChair",
+        "artist",
+        "author",
+        "designer",
+        "editor",
+          "ArtEditor","CopyEditor","ManagingEditor","DeputyManagingEditor",
+          "FeatureEditor","GraphicArtsEditor","NewsEditor","SportsEditor",
+          "CampusEditor","PhotoAssistantEditor",
+        "illustrator",
+        "manager",
+          "AdvertisingManager","BusinessManager","PhotoManager",
+        "organization",
+        "other",
+        "performer",
+        "photographer",
+        "producer",
+        "reporter"
+      ]
+  },
+
+  {
+    "label": "Coverage",
+    "name": "coverage",
+    "definition": "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.",
+    "uri": "http://purl.org/dc/elements/1.1/coverage",
+    "refinements": [ "spatial", "temporal" ]
+  },
+
+  {
+    "label": "Creator",
+    "name": "creator",
+    "definition": "An entity primarily responsible for making the resource.",
+    "uri": "http://purl.org/dc/elements/1.1/creator"
+  },
+
+  {
+    "label": "Date",
+    "name": "date",
+    "definition": "A point or period of time associated with an event in the lifecycle of the resource.",
+    "uri": "http://purl.org/dc/elements/1.1/date",
+    "refinements": ["created","valid","available","issued","modified","accepted","copyrighted","submitted"],
+    "encoding": ["W3C-DTF"]
+  },
+
+  {
+    "label": "Description",
+    "name": "description",
+    "definition": "An account of the resource.",
+    "uri": "http://purl.org/dc/elements/1.1/description",
+    "refinements":
+      [
+        "abstract", "approval", "audience", "author", "campus", "college", "defense",
+        "department", "extent", "note", "other", "program", "provenance", "school",
+        "sponsorship","statementOfResponsibility","tableOfContents","uri"
+      ],
+    "encoding": ["W3C-DTF"]
+  },
+
+  {
+    "label": "Format",
+    "name": "format",
+    "definition": "The file format, physical medium, or dimensions of the resource.",
+    "uri": "http://purl.org/dc/elements/1.1/format",
+    "refinements": ["extent","medium"],
+    "encoding": ["IMT"]
+  },
+
+  {
+    "label": "Identifier",
+    "name": "identifier",
+    "definition": "An unambiguous reference to the resource within a given context.",
+    "uri": "http://purl.org/dc/elements/1.1/identifier",
+    "refinements": ["bibui","callno","doi","ark","issn","isbn","isbn_10","isbn_13",
+      "uri","url","vendor","oclc"],
+    "encoding": ["URI"]
+  },
+
+  {
+    "label": "Language",
+    "name": "language",
+    "definition": "A language of the resource.",
+    "uri": "http://purl.org/dc/elements/1.1/language",
+    "refinements": [""],
+    "encoding": ["ISO_639-2RFC_3066"]
+  },
+
+  {
+    "label": "Publisher",
+    "name": "publisher",
+    "definition": "An entity responsible for making the resource available.",
+    "uri": "http://purl.org/dc/elements/1.1/publisher"
+  },
+
+  {
+    "label": "Relation",
+    "name": "relation",
+    "definition": "A related resource.",
+    "uri": "http://purl.org/dc/elements/1.1/relation",
+    "refinements":
+      [
+        "isVersionOf","hasVersion",
+        "isReplacedBy","replaces",
+        "isRequiredBy","requires",
+        "isReferencedBy","references",
+        "isPartOf","hasPart","isPartOfSeries",
+        "isFormatOf","hasFormat",
+        "conformsTo",
+        "uri"
+      ]
+  },
+
+  {
+    "label": "Rights",
+    "name": "rights",
+    "definition": "Information about rights held in and over the resource",
+    "uri": "http://purl.org/dc/elements/1.1/rights",
+    "refinements":["accessRights","license"],
+    "encoding":"URI"
+  },
+
+  {
+    "label": "Source",
+    "name": "source",
+    "definition": "A related resource from which the described resource is derived.",
+    "uri": "http://purl.org/dc/elements/1.1/source",
+    "encoding":"URI"
+  },
+
+  {
+    "label": "Subject",
+    "name": "subject",
+    "definition": "The topic of the resource.",
+    "uri": "http://purl.org/dc/elements/1.1/subject",
+    "encoding":["LCSH","MeSH","DDC","LCC","UDC"]
+  },
+
+  {
+    "label":"Title",
+    "name":"title",
+    "uri":"http://purl.org/dc/elements/1.1/title",
+    "definition":"A name given to the resource.",
+    "refinements":[ "alternative" ]
+  },
+
+  {
+    "label":"Type",
+    "name":"type",
+    "uri":"http://purl.org/dc/elements/1.1/type",
+    "definition":"The nature or genre of the resource.",
+    "refinements":
+      [
+        "abstract","animation","article",
+        "blog","book","bookChapter","bookReview",
+        "capstone","caseStudy",
+        "dataset","dissertation",
+        "finalPaper",
+        "image","image3D",
+        "journal",
+        "learningObject",
+        "macromediaFlash","magazine","map","mastersProject","minutes","monograph","movie","musicalScore",
+        "newsletter","newspaper",
+        "plan","blueprint","podcast","policy","postprint","preprint","presentation","proceedings",
+        "recording",
+          "recordingAcoustic","recordingMusical","recordingOral",
+        "report",
+        "technicalReport","thesis",
+        "video",
+        "website","workingPaper"
+      ],
+
+    "encoding":[ "DCMIType" ]
+  }
+
+]
