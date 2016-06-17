@@ -216,6 +216,30 @@
       ],
 
     "encoding":[ "DCMIType" ]
+  },
+
+
+
+  {
+    "label":"Audience",
+    "name":"audience",
+    "definition":"A class of entity for whom the resource is intended or useful.",
+    "uri":"http://dublincore.org/documents/usageguide/elements.shtml#audience",
+    "refinements":[ "educationLevel","mediator" ]
+  },
+
+  {
+    "label": "Provenance",
+    "name": "provenance",
+    "definition": "A statement of any changes in ownership and custody of the resource since its creation that are significant for its authenticity, integrity and interpretation.",
+    "uri": "http://dublincore.org/documents/usageguide/elements.shtml#provenance"
+  },
+
+  {
+    "label": "RightsHolder",
+    "name": "rightsHolder",
+    "definition": "A person or organization owning or managing rights over the resource",
+    "uri": "http://dublincore.org/documents/usageguide/elements.shtml#rightsHolder"
   }
 
 ]
