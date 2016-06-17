@@ -12,13 +12,14 @@
         "artist",
         "author",
         "designer",
+        "director",
         "editor",
-          "ArtEditor","CopyEditor","ManagingEditor","DeputyManagingEditor",
-          "FeatureEditor","GraphicArtsEditor","NewsEditor","SportsEditor",
-          "CampusEditor","PhotoAssistantEditor",
+          "ArtEditor","CopyEditor","ExecutiveEditor","ManagingEditor","DeputyManagingEditor",
+          "FeatureEditor","GraphicArtsEditor","NewsEditor","PhotographyEditor","SportsEditor",
+          "CampusEditor","AsstPhotoEditor",
         "illustrator",
-        "manager",
-          "AdvertisingManager","BusinessManager","PhotoManager",
+
+          "AdvManager","BusinessManager","ManagerOfPhotography",
         "organization",
         "other",
         "performer",
@@ -33,7 +34,14 @@
     "name": "coverage",
     "definition": "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.",
     "uri": "http://purl.org/dc/elements/1.1/coverage",
-    "refinements": [ "spatial", "temporal" ]
+    "refinements":
+      [
+        "spatial", "temporal",
+
+        "event", "other",
+        "period", "periodName",
+        "place","placeName"
+      ]
   },
 
   {
@@ -48,7 +56,12 @@
     "name": "date",
     "definition": "A point or period of time associated with an event in the lifecycle of the resource.",
     "uri": "http://purl.org/dc/elements/1.1/date",
-    "refinements": ["created","valid","available","issued","modified","accepted","copyrighted","submitted"],
+    "refinements":
+      [
+        "created","valid","available","issued","modified","dateaccepted","copyrighted","submitted",
+
+        "accessioned","defense","digitized"
+      ],
     "encoding": ["W3C-DTF"]
   },
 
@@ -59,11 +72,12 @@
     "uri": "http://purl.org/dc/elements/1.1/description",
     "refinements":
       [
-        "abstract", "approval", "audience", "author", "campus", "college", "defense",
+        "abstract", "tableofcontents",
+
+        "approval", "audience", "author", "campus", "college", "defense",
         "department", "extent", "note", "other", "program", "provenance", "school",
-        "sponsorship","statementOfResponsibility","tableOfContents","uri"
-      ],
-    "encoding": ["W3C-DTF"]
+        "sponsorship","statementOfResponsibility","uri"
+      ]
   },
 
   {
@@ -71,7 +85,14 @@
     "name": "format",
     "definition": "The file format, physical medium, or dimensions of the resource.",
     "uri": "http://purl.org/dc/elements/1.1/format",
-    "refinements": ["extent","medium"],
+    "refinements":
+      [
+        "extent","medium",
+
+        "audio","carrierExtent","content","duration",
+        "imageFormat","imageResolution",
+        "mediaType","medium","mimetype","original","workFormat"
+      ],
     "encoding": ["IMT"]
   },
 
@@ -80,8 +101,7 @@
     "name": "identifier",
     "definition": "An unambiguous reference to the resource within a given context.",
     "uri": "http://purl.org/dc/elements/1.1/identifier",
-    "refinements": ["bibui","callno","doi","ark","issn","isbn","isbn_10","isbn_13",
-      "uri","url","vendor","oclc"],
+    "refinements": [ "bibliographiccitation","citation","govdoc","isbn","issn","other","uri","url" ],
     "encoding": ["URI"]
   },
 
@@ -90,7 +110,7 @@
     "name": "language",
     "definition": "A language of the resource.",
     "uri": "http://purl.org/dc/elements/1.1/language",
-    "refinements": [""],
+    "refinements": ["iso"],
     "encoding": ["ISO_639-2RFC_3066"]
   },
 
@@ -98,7 +118,8 @@
     "label": "Publisher",
     "name": "publisher",
     "definition": "An entity responsible for making the resource available.",
-    "uri": "http://purl.org/dc/elements/1.1/publisher"
+    "uri": "http://purl.org/dc/elements/1.1/publisher",
+    "refinements": ["namePublication"]
   },
 
   {
@@ -124,7 +145,12 @@
     "name": "rights",
     "definition": "Information about rights held in and over the resource",
     "uri": "http://purl.org/dc/elements/1.1/rights",
-    "refinements":["accessRights","license"],
+    "refinements":
+      [
+        "accessrights","license",
+
+        "availability","uri"
+      ],
     "encoding":"URI"
   },
 
@@ -133,6 +159,7 @@
     "name": "source",
     "definition": "A related resource from which the described resource is derived.",
     "uri": "http://purl.org/dc/elements/1.1/source",
+    "refinements": ["uri"],
     "encoding":"URI"
   },
 
@@ -141,7 +168,12 @@
     "name": "subject",
     "definition": "The topic of the resource.",
     "uri": "http://purl.org/dc/elements/1.1/subject",
-    "encoding":["LCSH","MeSH","DDC","LCC","UDC"]
+    "encoding":
+      [
+        "LCSH","MeSH","DDC","LCC","UDC",
+
+        "ddc","keyword","lcc","lcnaf","lcsh","other"
+      ]
   },
 
   {
@@ -149,7 +181,12 @@
     "name":"title",
     "uri":"http://purl.org/dc/elements/1.1/title",
     "definition":"A name given to the resource.",
-    "refinements":[ "alternative" ]
+    "refinements":
+      [
+        "alternative",
+
+        "article","series"
+      ]
   },
 
   {
@@ -157,7 +194,7 @@
     "name":"type",
     "uri":"http://purl.org/dc/elements/1.1/type",
     "definition":"The nature or genre of the resource.",
-    "refinements":
+    "options":
       [
         "abstract","animation","article",
         "blog","book","bookChapter","bookReview",
