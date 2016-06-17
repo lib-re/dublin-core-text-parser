@@ -1,7 +1,7 @@
 import dc_metadata.Contributor;
-import dc_metadata.Type;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Parser object which interprets a given text file and creates an interpreted 'Item' object
@@ -92,15 +92,13 @@ public class Parser {
          * 4: filename                  |   'RITReporter1993_Vol73No18.pdf'
          */
 
+        //TODO convert to responsive for v0.2.0
         switch(num){
             case 0:
                 item.addAltTitle(line);
                 break;
             case 1:
-                String volume = line.split(",")[0];
-                String number = line.split(",")[1];
-                item.addSeries(volume);
-                item.addSeries(number);
+                for (String s: line.split(",")) { item.addSeries(s); }
                 break;
             case 2:
                 item.addDateIssued(line);
@@ -126,6 +124,12 @@ public class Parser {
      * @return
      */
     private static String processName(String line){
+
+        //prefix anything that's not a name with a
+        if(line.startsWith("*"))
+            return line;
+
+
         String[] names = line.split(" ");
         String lName = names[names.length-1];
         String fName = line.substring(0, line.length() - lName.length() - 1);
@@ -167,6 +171,10 @@ public class Parser {
         //OTHER
         else{ return Contributor.qualifier.OTHER; }
     }
+
+    /* - Element Type - */
+
+
 
 
     /* - Editors - */

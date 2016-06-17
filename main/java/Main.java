@@ -29,14 +29,14 @@ public class Main {
 
         /* one file for entire collection */
         options.addOption("C", "csv",  false, "Create a single .csv  file containing metadata of each item");
-        options.addOption("M", "mrk",  false, "Create a single .mrk  file containing metadata of each item");
-        options.addOption("J", "json", false, "Create a single .json file containing metadata of each item");
-        options.addOption("X", "xml",  false, "Create a single .xml  file containing metadata of each item");
+        //options.addOption("M", "mrk",  false, "Create a single .mrk  file containing metadata of each item");
+        //options.addOption("J", "json", false, "Create a single .json file containing metadata of each item");
+        //options.addOption("X", "xml",  false, "Create a single .xml  file containing metadata of each item");
 
         /* one file for each item */
-        options.addOption("j", "json-each", false, "Create a separate json object for each .txt file");
-        options.addOption("x", "xml-each",  false, "Create a separate xml object for each .txt file");
-        options.addOption("z", "zip", false, "(optional) ZIP the output");
+        //options.addOption("j", "json-each", false, "Create a separate json object for each .txt file");
+        //options.addOption("x", "xml-each",  false, "Create a separate xml object for each .txt file");
+        //options.addOption("z", "zip", false, "(optional) ZIP the output");
 
 
         //print for help
