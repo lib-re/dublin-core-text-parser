@@ -2,58 +2,154 @@ import dc_metadata.Contributor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Parser object which interprets a given text file and creates an interpreted 'Item' object
  */
 public class Parser {
 
-    public static int num_header_lines = 5;
+    //delimiters
+    private static final String DELIM_MATCHSWITCH = "-";
+    private static final String DELIM_NOTE = "//";
+    //private static String SPLIT_HEADER = ",";
+    //private static String SPLIT_HEADER_TITLE = "|";
+
+    //options (elements)
+    public static String AUDIENCE       = "AUDIENCE";
+    public static String COVERAGE       = "COVERAGE";
+    public static String DATE           = "DATE";
+    public static String DESCRIPTION    = "DESCRIPTION";
+    public static String FILENAME       = "FILENAME";
+    public static String FORMAT         = "FORMAT";
+    public static String IDENTIFIER     = "IDENTIFIER";
+    public static String LANGUAGE       = "LANGUAGE";
+    public static String NOTE           = "NOTE";
+    public static String PUBLISHER      = "PUBLISHER";
+    public static String RELATION       = "RELATION";
+    public static String RIGHTS         = "RIGHTS";
+    public static String RIGHTSHOLDER   = "RIGHTSHOLDER";
+    public static String SUBJECT        = "SUBJECT";
+    public static String TITLE          = "TITLE";
+    public static String TYPE           = "TYPE";
+    private static String[] ALL_OPTIONS =
+            { AUDIENCE, COVERAGE, DATE, DESCRIPTION, FILENAME, FORMAT, IDENTIFIER, LANGUAGE,
+                NOTE, PUBLISHER, RELATION, RIGHTS, RIGHTSHOLDER, SUBJECT, TITLE, TYPE };
 
     //modes
-    private enum mode { CONTRIBUTORS, ARTICLES };
+    private enum mode { CONTRIBUTORS, ARTICLES }
     private mode currentMode = mode.CONTRIBUTORS;
 
     //qualifier
-    private Contributor.qualifier currentQualifier = Contributor.qualifier.AUTHOR;
+    private String currentQualifier = Contributor.AUTHOR;
 
-    //item to be added
-    private Item item = new Item(0);
+    //critical elements
+    ArrayList<String> lsHeaderOptions;
+    ArrayList<String[]> lsShared;
+    ArrayList<Item> lsItems;
+    Item current_item;
+
+
+    // - constructors - //
 
     /**
-     * Process a given file
-     * @param file
-     * @return
+     * base constructor which initializes object state and sets defaults
      */
-    public int process(File file){
+    public Parser(){
 
-        int i = 0;
-        String line = "".trim();
+        //initialize header options
+        lsHeaderOptions = new ArrayList<String>();
+
+        /* set to default header:
+         * 0: title                     |   'Title of the Issue'
+         * 1: relation.isPartOfSeries   |   'Volume ##, Number ##, "
+         * 2: date.issued               |   '1993-03-26'
+         * 3: title.alternative         |   ''
+         * 4: filename                  |   'filename.pdf'
+         */
+        lsHeaderOptions.add(TITLE);
+        lsHeaderOptions.add(RELATION + "_" + "ISPARTOFSERIES");
+        lsHeaderOptions.add(DATE + "_" + "ISSUED");
+        lsHeaderOptions.add(TITLE + "_" + "ALTERNATIVE");
+        lsHeaderOptions.add(FILENAME);
+
+        //initialize list of shared values
+        lsShared = new ArrayList<String[]>();
+
+        //initialize list of items
+        lsItems = new ArrayList<Item>();
+    }
+
+
+    // - methods - //
+
+    /**
+     * check validity of the list of header lines, clear, replace
+     * @param lsHeaderLines the list of perspective 'options' (from config file)
+     * @return whether or not the header configuration was accurately set.
+     */
+    public boolean setHeaderOptions(String[] lsHeaderLines){
+
+        //return false if the options listed are invalid
+        if(!isValidOptions(Arrays.asList(lsHeaderLines)))
+            return false;
+
+        //clear the list of existing strings
+        this.lsHeaderOptions.clear();
+
+        //add, in order, the options passed in.
+        return Collections.addAll(lsHeaderOptions, lsHeaderLines);
+
+    }
+
+    public boolean setShared(List<String[]> shared){
+
+        //iterate through list, adding
+        ArrayList<String> lsSharedOptions = new ArrayList<String>();
+        for(String[] line : shared){ //for each line in the
+            lsSharedOptions.add(line[0]);
+            this.lsShared.add(line);
+        }
+
+        //validate the set of shared values. if not validated, clear
+        if(!isValidOptions(lsSharedOptions)){
+            this.lsShared.clear();
+            return false;
+        }
+
+        //already added
+        return true;
+    }
+
+    /** Process a single metadata file */
+    public int processMetadataFile(File file, int i){
+
+        //item to be added
+        current_item = new Item(i);
 
         //foreach line in the file:
+            String line = "".trim();
 
-            //process header according to set rules (see processHeaderLine)
-            if(i>=0 && i<num_header_lines){
-                processHeaderLine(item, line, i);
+            //process header according to set rules
+            if(i>=0 && i<this.lsHeaderOptions.size()){
+                current_item.addElementType(lsHeaderOptions.get(i), line);
             }
 
             //catch any commented lines and add them as notes
-            if(line.startsWith("//")){
-                item.addNote(line);
+            if(matchComment(line)){
+                current_item.addNote(line);
             }
 
             //change mode according to tags
-            if(line.startsWith("-") && line.endsWith("-")){
+            if(matchModeSwitchString(line)){
 
                 //switch to adding contributors
-                if(line.contains("CONTRIBUTOR") || line.contains("COLLABORATOR")){
-                    this.currentMode = mode.CONTRIBUTORS;
-                }
+                if(matchContributor(line)){ this.currentMode = mode.CONTRIBUTORS; }
 
                 //switch to adding articles
-                if(line.contains("ARTICLE")){
-                    this.currentMode = mode.ARTICLES;
-                }
+                if(matchTableOfContents(line)){ this.currentMode = mode.ARTICLES; }
 
             }
 
@@ -61,55 +157,31 @@ public class Parser {
 
             //if current mode is adding articles, just add the line
             if(currentMode == mode.ARTICLES){
-                item.addArticle(line);
+                current_item.addArticle(line);
             }
 
             //if current mode is adding contributors...
             else if(currentMode == mode.CONTRIBUTORS) {
 
                 //if we read an all caps field, switch contributor type
-                if(line.toUpperCase() == line){
-                    this.currentQualifier = determineContributorQualifier(line);
+                if(isAllCaps(line)){
+                    this.currentQualifier = Contributor.determineContributorQualifier(line);
 
                 //add appropriate contributor qualifier type
                 }else{
-                    item.addContributor(this.currentQualifier, processName(line));
+                    current_item.addContributor(this.currentQualifier, line);
                 }
 
             }
+        //(end for loop through line of file)
 
-        return 1;
-    }
-
-    /** pull the first n lines of the header file and process according */
-    private static int processHeaderLine(Item item, String line, int num){
-
-        /* HEADER
-         * 0: title.alternative         |   'Reporter'
-         * 1: relation.isPartOfSeries   |   'Volume 73, Number 18"
-         * 2: date.issued               |   '1993-03-26'
-         * 3: title.alternative         |   'Mr. All American'
-         * 4: filename                  |   'RITReporter1993_Vol73No18.pdf'
-         */
-
-        //TODO convert to responsive for v0.2.0
-        switch(num){
-            case 0:
-                item.addAltTitle(line);
-                break;
-            case 1:
-                for (String s: line.split(",")) { item.addSeries(s); }
-                break;
-            case 2:
-                item.addDateIssued(line);
-                break;
-            case 3:
-                item.addAltTitle(line);
-                break;
-            case 4:
-                item.addFilename(line);
-                break;
+        //add the shared element values to the item.
+        for(String[] s2D : this.lsShared){
+            this.current_item.addElementType(s2D[0],s2D[1]);
         }
+
+        //add current_item to lsItems
+        lsItems.add(current_item);
 
         return 1;
     }
@@ -118,148 +190,48 @@ public class Parser {
     // - helpers - //
 
     /**
-     * process a contributor line into a formatted line
-     *  e.g. "fName mName mInitial lName" into "lName, fName mName mInitial lName"
-     * @param line
-     * @return
+     * check list of header options sent in to see if they are valid
+     * @param lsOptions the set of custom options the user established for the header
+     * @return whether or not the list of header options is valid.
      */
-    private static String processName(String line){
+    private static boolean isValidOptions(List<String> lsOptions){
 
-        //prefix anything that's not a name with a
-        if(line.startsWith("*"))
-            return line;
+        List<String> lsAllOptions = Arrays.asList(ALL_OPTIONS);
+        for(String o : lsOptions) {
+            if (!lsAllOptions.contains(o))
+                return false;
+        }
+        return true;
+    }
 
-
-        String[] names = line.split(" ");
-        String lName = names[names.length-1];
-        String fName = line.substring(0, line.length() - lName.length() - 1);
-
-        return lName + ", " + fName;
+    private static boolean isAllCaps(String str){
+        return str.equals(str.toUpperCase());
     }
 
     // - match functions - //
 
-    /** given the all caps line, return which Contributor.qualifier type it represents, using help functions */
-    private static Contributor.qualifier determineContributorQualifier(String line) {
+    /* - Mode Entry - */
 
-        //AUTHOR/WRITER
-        if(matchAuthor(line)               ){ return Contributor.qualifier.AUTHOR;           }
-
-        //EDITOR
-        else if (matchEditor(line)) {
-            if( matchExecutive(line)       ){ return Contributor.qualifier.EDITOR_EXECUTIVE; }
-            else if( matchArt(line)        ){ return Contributor.qualifier.EDITOR_ART;       }
-            else if( matchFeature(line)    ){ return Contributor.qualifier.EDITOR_FEATURE;   }
-            else if( matchManaging(line)   ){ return Contributor.qualifier.EDITOR_MANAGING;  }
-            else if( matchCopy(line)       ){ return Contributor.qualifier.EDITOR_COPY;      }
-            else if( matchPhoto(line)      ){ return Contributor.qualifier.EDITOR_PHOTO;     }
-            else if( matchSports(line)     ){ return Contributor.qualifier.EDITOR_SPORTS;    }
-            else if( matchNews(line)       ){ return Contributor.qualifier.EDITOR_NEWS;      }
-            else                            { return Contributor.qualifier.EDITOR;           }
-        }
-
-        //ADVISOR, ARTIST, DESIGNER, ILLUSTRATOR, PHOTOGRAPHER, MANAGING(_BUSINESS)
-        else if( matchAdvisor(line)        ){ return Contributor.qualifier.ADVISOR;          }
-        else if( matchArtist(line)         ){ return Contributor.qualifier.ARTIST;           }
-        else if( matchDesigner(line)       ){ return Contributor.qualifier.DESIGNER;         }
-        else if( matchIllustrator(line)    ){ return Contributor.qualifier.ILLUSTRATOR;      }
-        else if( matchPhoto(line)          ){ return Contributor.qualifier.PHOTOGRAPHER;     }
-        else if( matchManaging(line)){
-            return matchBusiness(line)? Contributor.qualifier.MANAGER_BUSINESS : Contributor.qualifier.MANAGER;
-        }
-
-        //OTHER
-        else{ return Contributor.qualifier.OTHER; }
+    /** mode-switch */
+    private static boolean matchModeSwitchString(String str){
+        return str.startsWith(DELIM_MATCHSWITCH) && str.endsWith(DELIM_MATCHSWITCH);
     }
 
-    /* - Element Type - */
-
-
-
-
-    /* - Editors - */
-
-    /* EDITOR */
-    private static boolean matchEditor( String str ){
-        return str.contains("EDITOR");
+    /** dc.contributor */
+    private static boolean matchContributor(String str){
+        return str.contains("CONTRIB") || str.contains("COLLABORATOR");
     }
 
-    /* EXECUTIVE */
-    private static boolean matchExecutive( String str ){
-        return str.contains("EXECUTIVE");
-    }
-
-    /* ART */
-    private static boolean matchArt( String str ){
-        return str.contains("ART");
-    }
-
-    /* COPY */
-    private static boolean matchCopy( String str  ){
-        return str.contains("COPY");
-    }
-
-    /* FEATURE */
-    private static boolean matchFeature( String str){
-        return str.contains("FEATURE");
-    }
-
-    /* SPORTS */
-    private static boolean matchSports( String str ){
-        return str.contains("SPORTS");
-    }
-
-    /* NEWS */
-    private static boolean matchNews( String str ){
-        return str.contains("NEWS");
-    }
-
-    /* PHOTO */
-    private static boolean matchPhoto( String str ){
-        return str.contains("PHOTO");
-    }
-
-    /* MANAGING */
-    private static boolean matchManaging( String str ){
-        return str.contains("MANAG");
+    /** dc.description.tableOfContents */
+    private static boolean matchTableOfContents(String str){
+        return str.contains("TABLE OF") || str.contains("ARTICLE");
     }
 
 
-    /* - Other contributor qualifiers - */
+    /* - 'special' line - */
 
-    /* ADVISOR */
-    private static boolean matchAdvisor( String str ){
-        return str.contains("ADVISOR");
-    }
-
-    /* DESIGNER */
-    private static boolean matchDesigner( String str ){
-        return str.contains("DESIGNER");
-    }
-
-    /* ILLUSTRATOR */
-    private static boolean matchIllustrator( String str ){
-        return str.contains("ILLUSTRATOR");
-    }
-
-    /* PHOTOGRAPHER */
-    private static boolean matchPhotographer( String str ){
-        return str.contains("PHOTOGRAPHER");
-    }
-
-    /* ARTIST */
-    private static boolean matchArtist( String str ){
-        return str.contains("ARTIST");
-    }
-
-    /* BUSINESS */
-    private static boolean matchBusiness( String str ){
-        return str.contains("BUSINESS");
-    }
-
-    /* WRITER/AUTHOR */
-    private static boolean matchAuthor( String str ){
-        return str.contains("AUTHOR") || str.contains("WRITER");
+    private static boolean matchComment(String str){
+        return str.startsWith(DELIM_NOTE);
     }
 
 

@@ -1,4 +1,5 @@
 import dc_metadata.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 
@@ -7,21 +8,6 @@ import java.util.ArrayList;
  * Object representing an item from a given collection
  */
 public class Item {
-
-    //store option strings
-    public static String DATE_ISSUED = "DATE_ISSUED";
-    public static String DESCRIPTION = "DESCRIPTION";
-    public static String FILENAME    = "FILENAME";
-    public static String FORMAT      = "FORMAT";
-    public static String IDENTIFIER  = "IDENTIFIER";
-    public static String LANGUAGE    = "LANGUAGE";
-    public static String LICENSE     = "LICENSE";
-    public static String PUBLISHER   = "PUBLISHER";
-    public static String SERIES      = "SERIES";
-    public static String SUBJECT     = "SUBJECT";
-    public static String TITLE       = "TITLE";
-    public static String TITLE_ALT   = "TITLE_ALTERNATIVE";
-    public static String TYPE        = "TYPE";
 
     //identification number in series
     public int id;
@@ -40,7 +26,8 @@ public class Item {
         this.lsElements = new ArrayList<Element>();
     }
 
-    // - print functions - //
+    // - print/export functions - //
+
     @Override
     public final String toString(){
         String header = "---- Item " + id + ": " + filename + " ----";
@@ -57,26 +44,56 @@ public class Item {
 
     // - add elements to the item - //
 
-    /**
-     *
-     * @param option String containing reference for
-     * @param line
-     * @return
-     */
-    public boolean addOption(String option, String line){
+    /* - determine element type by option - */
+    public boolean addElementType(String optionText, String line){
 
-        boolean validOption = true;
+        boolean toReturn = true;
 
-        if(option == DATE_ISSUED){      this.addDateIssued(line); }
-        else if(option == DESCRIPTION){ this.addDesciption(line); }
-        else if(option == FILENAME){    this.filename = line;     }
-        else if(option == PUBLISHER){   this.addPublisher(line);  }
-        else if(option == TITLE){       this.addTitle(line);      }
-        else if(option == TITLE_ALT){   this.addAltTitle(line);   }
-        else if(option == TYPE){        this.addType(line);       }
-        else { validOption = false; }
+        String[] options = (optionText.toLowerCase()).split("_");
+        String e = options[0];
+        String q = options[1];
 
-        return validOption;
+        if(e.startsWith(Parser.AUDIENCE)) {
+
+        }else if(e.startsWith(Parser.COVERAGE)){
+
+        }else if(e.startsWith(Parser.DATE)){
+
+        }else if(e.startsWith(Parser.DESCRIPTION)){
+
+        }else if(e.startsWith(Parser.FILENAME)){
+
+        }else if(e.startsWith(Parser.FORMAT)){
+
+        }else if(e.startsWith(Parser.IDENTIFIER)){
+
+        }else if(e.startsWith(Parser.LANGUAGE)){
+
+        }else if(e.startsWith(Parser.NOTE)){
+
+        }else if(e.startsWith(Parser.PUBLISHER)){
+
+        }else if(e.startsWith(Parser.RELATION)) {
+
+        }else if(e.startsWith(Parser.RIGHTS)){
+
+        }else if(e.startsWith(Parser.RIGHTSHOLDER)){
+
+        }else if(e.startsWith(Parser.SUBJECT)){
+
+        }else if(e.startsWith(Parser.TITLE)){
+
+        }else if(e.startsWith(Parser.TYPE)){
+
+        }else{
+            toReturn = false;
+            //TODO flag line with option as a warning/error including option and raw line
+        }
+
+        //TODO add logger line
+
+        //return whether or not it was added
+        return toReturn;
     }
 
     /**
@@ -124,11 +141,12 @@ public class Item {
 
     public void addDateIssued(String line) {
         //TODO
+        throw new NotImplementedException();
     }
 
     /* - dc.contributor - */
-    public void addContributor(Contributor.qualifier q, String value){
-        lsElements.add( new Contributor(q, value));
+    public void addContributor(String qualifier, String value){
+        lsElements.add( Contributor.createContributor(qualifier, value));
     }
 
     /* - other - */
@@ -140,6 +158,7 @@ public class Item {
 
     public void addPublisher(String publisher) {
         //TODO
+        throw new NotImplementedException();
     }
 
 }
