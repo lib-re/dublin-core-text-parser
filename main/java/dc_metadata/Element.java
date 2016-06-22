@@ -20,7 +20,7 @@ public abstract class Element {
     public final String toString(){
 
         String toReturn = "dc." + name;
-        toReturn += (qualifier.isEmpty())? "" : qualifier + ".";
+        toReturn += (qualifier.isEmpty())? "" : "." + qualifier;
         return toReturn + ": " + value;
 
     }

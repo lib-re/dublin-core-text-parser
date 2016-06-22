@@ -1,9 +1,7 @@
 import dc_metadata.Contributor;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,9 +10,9 @@ import java.util.List;
 public class Parser {
 
     //delimiters
-    private static final String DELIM_MATCHSWITCH = "-";
+    private static final String DELIM_MODESWITCH = "-";
     private static final String DELIM_NOTE = "//";
-    //private static String SPLIT_HEADER = ",";
+    public static String SPLIT_HEADER = ",";
     //private static String SPLIT_HEADER_TITLE = "|";
 
     //options (elements)
@@ -40,10 +38,10 @@ public class Parser {
 
     //modes
     private enum mode { CONTRIBUTORS, ARTICLES }
-    private mode currentMode = mode.CONTRIBUTORS;
+    private mode current_mode = mode.CONTRIBUTORS;
 
     //qualifier
-    private String currentQualifier = Contributor.AUTHOR;
+    private String current_qualifier = Contributor.AUTHOR;
 
     //critical elements
     ArrayList<String> lsHeaderOptions;
@@ -90,18 +88,17 @@ public class Parser {
      * @param lsHeaderLines the list of perspective 'options' (from config file)
      * @return whether or not the header configuration was accurately set.
      */
-    public boolean setHeaderOptions(String[] lsHeaderLines){
+    public boolean setHeaderOptions(List<String> lsHeaderLines){
 
         //return false if the options listed are invalid
-        if(!isValidOptions(Arrays.asList(lsHeaderLines)))
+        if(!isValidOptions(lsHeaderLines))
             return false;
 
         //clear the list of existing strings
         this.lsHeaderOptions.clear();
 
         //add, in order, the options passed in.
-        return Collections.addAll(lsHeaderOptions, lsHeaderLines);
-
+        return this.lsHeaderOptions.addAll(lsHeaderLines);
     }
 
     public boolean setShared(List<String[]> shared){
@@ -124,56 +121,75 @@ public class Parser {
     }
 
     /** Process a single metadata file */
-    public int processMetadataFile(File file, int i){
+    public boolean processMetadataFile(List<String> lsFileLines, int id){
 
         //item to be added
-        current_item = new Item(i);
+        current_item = new Item(id);
 
-        //foreach line in the file:
-            String line = "".trim();
+        int i = 0;
+        for(String line : lsFileLines) {
+            line = line.trim();
+
+            //don't process empty lines, but still increment the line number
+            if(line.isEmpty()) {
+                i++; continue;
+            }
 
             //process header according to set rules
-            if(i>=0 && i<this.lsHeaderOptions.size()){
+            if (i >= 0 && i < this.lsHeaderOptions.size()) {
                 current_item.addElementType(lsHeaderOptions.get(i), line);
+                i++;
             }
 
             //catch any commented lines and add them as notes
-            if(matchComment(line)){
-                current_item.addNote(line);
+            else if (matchComment(line)) {
+                current_item.addNote(line.replace("//","").trim());
             }
 
             //change mode according to tags
-            if(matchModeSwitchString(line)){
+            else if (matchModeSwitchString(line)) {
+
+                System.out.print("MODE_SWITCH: " + this.current_mode + " -> ");
 
                 //switch to adding contributors
-                if(matchContributor(line)){ this.currentMode = mode.CONTRIBUTORS; }
+                if (matchContributor(line)) {
+                    this.current_mode = mode.CONTRIBUTORS;
+                }
 
                 //switch to adding articles
-                if(matchTableOfContents(line)){ this.currentMode = mode.ARTICLES; }
+                if (matchTableOfContents(line)) {
+                    this.current_mode = mode.ARTICLES;
+                }
+
+                System.out.println(current_mode);
 
             }
 
             // - process the body - //
 
             //if current mode is adding articles, just add the line
-            if(currentMode == mode.ARTICLES){
+            else if (current_mode == mode.ARTICLES) {
                 current_item.addArticle(line);
             }
 
             //if current mode is adding contributors...
-            else if(currentMode == mode.CONTRIBUTORS) {
+            else if (current_mode == mode.CONTRIBUTORS) {
 
                 //if we read an all caps field, switch contributor type
-                if(isAllCaps(line)){
-                    this.currentQualifier = Contributor.determineContributorQualifier(line);
+                if (isAllCaps(line)) {
+                    System.out.print("PARSER: switch contributor type: '" + this.current_qualifier + "' to ");
 
-                //add appropriate contributor qualifier type
-                }else{
-                    current_item.addContributor(this.currentQualifier, line);
+                    this.current_qualifier = line;
+
+                    System.out.println("'" + this.current_qualifier + "'");
+
+                    //add appropriate contributor qualifier type
+                } else {
+                    current_item.addContributor(this.current_qualifier, line);
                 }
 
             }
-        //(end for loop through line of file)
+        }//(end for loop through line of file)
 
         //add the shared element values to the item.
         for(String[] s2D : this.lsShared){
@@ -183,7 +199,9 @@ public class Parser {
         //add current_item to lsItems
         lsItems.add(current_item);
 
-        return 1;
+        System.out.println(current_item);
+
+        return true;
     }
 
 
@@ -214,7 +232,7 @@ public class Parser {
 
     /** mode-switch */
     private static boolean matchModeSwitchString(String str){
-        return str.startsWith(DELIM_MATCHSWITCH) && str.endsWith(DELIM_MATCHSWITCH);
+        return str.startsWith(DELIM_MODESWITCH) && str.endsWith(DELIM_MODESWITCH);
     }
 
     /** dc.contributor */
@@ -224,7 +242,7 @@ public class Parser {
 
     /** dc.description.tableOfContents */
     private static boolean matchTableOfContents(String str){
-        return str.contains("TABLE OF") || str.contains("ARTICLE");
+        return (str.contains("TABLE") && str.contains("OF") && str.contains("CONTENT") ) || str.contains("ARTICLE");
     }
 
 
@@ -234,5 +252,10 @@ public class Parser {
         return str.startsWith(DELIM_NOTE);
     }
 
+
+    /* - getters and setters */
+    public List<Item> getLsItems(){
+        return this.lsItems;
+    }
 
 }

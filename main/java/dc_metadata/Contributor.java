@@ -69,6 +69,9 @@ public class Contributor extends Element {
     public static Contributor createContributor(String qualifierText, String fullName) {
         String qualifier = determineContributorQualifier(qualifierText);
         String value = determineName(fullName);
+
+        System.out.println("CONTRIBUTOR-created | qualifier: " + qualifier + ", value: " + value);
+
         return new Contributor(qualifier, value);
     }
 
@@ -100,7 +103,7 @@ public class Contributor extends Element {
 
         String[] names = line.split(" ");
         String lName = names[names.length-1];
-        String fName = line.substring(0, line.length() - lName.length() - 1);
+        String fName = line.substring(0, line.length() - lName.length() );
 
         return lName + ", " + fName;
     }
@@ -108,7 +111,7 @@ public class Contributor extends Element {
     // - matching - //
 
     /** given the all caps line, return which Contributor.qualifier type it represents, using help functions */
-    public static String determineContributorQualifier(String line) {
+    private static String determineContributorQualifier(String line) {
 
         //AUTHOR/WRITER
         if(matchAuthor(line)               ){ return AUTHOR;           }
@@ -131,7 +134,7 @@ public class Contributor extends Element {
         else if( matchArtist(line)         ){ return ARTIST;           }
         else if( matchDesigner(line)       ){ return DESIGNER;         }
         else if( matchIllustrator(line)    ){ return ILLUSTRATOR;      }
-        else if( matchPhotographer(line)          ){ return PHOTOGRAPHER;     }
+        else if( matchPhotographer(line)   ){ return PHOTOGRAPHER;     }
         else if( matchManaging(line)){
             return matchBusiness(line)? MANAGER_BUSINESS : OTHER;
         }

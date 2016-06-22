@@ -39,9 +39,14 @@ public class Description extends Element {
     }
 
 
+    /**
+     * TODO controlled vocabulary for
+     * @param q
+     * @param description
+     */
     public Description(qualifiers q, String description){
         this(description);
-        this.qualifier = q.toString().replace(" ", "");
+        this.qualifier = q.toString().replace("_", "").toLowerCase();
     }
 
 }

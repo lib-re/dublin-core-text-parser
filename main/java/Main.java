@@ -1,6 +1,7 @@
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.cli.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -11,6 +12,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Main {
 
     public static String DELIM_SHARED = "|";
+    public static String DIRECTORY_PATH_IN  = "/Users/admin/Desktop/";
+    public static String DIRECTORY_PATH_OUT = "/Users/admin/Desktop/Out";
 
     public static void main(String[] args) throws IOException, ParseException {
 
@@ -53,9 +56,6 @@ public class Main {
         }
 
 
-        //print for help
-
-
         // -- process this input -- //
 
 
@@ -74,16 +74,16 @@ public class Main {
         }
 
 
-        /* - run the program in the absense of these tags */
+        /* - run the program in the absence of these tags */
 
         //instantiate a new parser
         Parser p = new Parser();
 
         //alter header with given the contents of config file
         if (commandLine.hasOption('c')) {
-            String[] lsOptions = processFileIntoStringArray(commandLine.getOptionValue('c').trim());
+            List<String> lsOptions = processFileIntoStringArray(commandLine.getOptionValue('c').trim());
 
-            if(!p.setHeaderOptions(lsOptions)){
+            if( !p.setHeaderOptions(lsOptions) ){
                 System.out.println("!!! Error: Invalid config file !!! "); //TODO replace with logger.error
                 System.exit(1);
             }
@@ -91,7 +91,7 @@ public class Main {
 
         //set the shared
         if (commandLine.hasOption('s')) {
-            String[] lsSharedLines = processFileIntoStringArray(commandLine.getOptionValue('s').trim());
+            List<String> lsSharedLines = processFileIntoStringArray(commandLine.getOptionValue('s').trim());
 
             ArrayList<String[]> lsShared2D = new ArrayList<String[]>();
             for(String line : lsSharedLines )
@@ -100,17 +100,69 @@ public class Main {
             //export according to
             p.setShared(lsShared2D);
         }
+
+        //go through each of the files,
+
+        int id = 1000;
+        //foreach file in the directory...
+
+            String focus = "/NF-1969-02.txt";
+            String waldo = "/sample-metadata-file.txt";
+            String report= "/1990-v123n04.txt";
+            String[] lsFiles = {focus, waldo, report };
+
+            for(String filename : lsFiles) {
+                p.processMetadataFile(processFileIntoStringArray(DIRECTORY_PATH_IN + filename), id);
+                id++;
+            }
+        //end foreach file in directory...
+
+
+        // - export in desired formats - //
+
+        boolean exp_csv = commandLine.hasOption('C');
+        boolean exp_XML = commandLine.hasOption('X');   boolean exp_xml = commandLine.hasOption('x');
+        boolean exp_MRK = commandLine.hasOption('M');   boolean exp_mrk = commandLine.hasOption('m');
+        boolean exp_JSN = commandLine.hasOption('J');   boolean exp_jsn = commandLine.hasOption('j');
+
+
+
+
+        for(Item i : p.getLsItems()){ System.out.println(i); }
     }
 
-    public static String[] processFileIntoStringArray(String filename){
+    /**
+     * Read all lines of a file, return list of strings.
+     * @param filename
+     * @return
+     */
+    public static List<String> processFileIntoStringArray(String filename) {
 
-        //open file
+        List<String> lsLines = new ArrayList<String>();
 
-        //read file
+        try {
 
-        //for line in file
-            //
-        throw new NotImplementedException();
+            //open file
+            File file = new File(filename);
+
+            //create file and buffered reader
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            int i = 0;
+            for (String line; (line = br.readLine()) != null; ) {
+                lsLines.add(i,line); i++;
+            }
+            // line is not visible here.
+        } catch (FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+            System.out.println("!!! Error file: " + filename + " not found !!!"); //TODO LOGGER.error
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.out.println("!!! Error opening and/or using the file: " + filename + " !!!"); //TODO LOGGER.error
+        }
+
+        return lsLines;
+
     }
 
 
