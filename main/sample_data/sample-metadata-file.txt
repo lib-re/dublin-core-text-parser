@@ -4,7 +4,7 @@ Vol 03, Number 17
 Red, White, ...and Blue: The Story of a Man Who Lost Himself Trying to Hide in the Crowd
 where-am-i.pdf
 
--TABLE_OF_CONTENTS-
+-TABLEOFCONTENTS-
 my early life
 the adolescent years
 the striped shirt
