@@ -62,7 +62,7 @@ public class Item {
 
         boolean toReturn = true;
 
-        String[] options = (optionText.toLowerCase()).split("_");
+        String[] options = optionText.split("_");
         String e = options[0];
 
         String q = "";
@@ -70,42 +70,44 @@ public class Item {
             q = options[1];
 
         if(e.startsWith(Parser.AUDIENCE)) {
-
+            this.lsElements.add(Audience.createAudience(q,line));
         }else if(e.startsWith(Parser.COVERAGE)){
-
+            this.lsElements.add(Coverage.createCoverage(q,line));
         }else if(e.startsWith(Parser.DATE)){
-            addDateIssued(line);
+            this.lsElements.add(Date.createDate(q,line));
         }else if(e.startsWith(Parser.DESCRIPTION)){
-            addDesciption(line);
+            this.lsElements.add(Description.createDescription(q,line));
         }else if(e.startsWith(Parser.FILENAME)){
             addFilename(line);
         }else if(e.startsWith(Parser.FORMAT)){
-
+            this.lsElements.add(Format.createFormat(q,line));
         }else if(e.startsWith(Parser.IDENTIFIER)){
-
+            this.lsElements.add(Identifier.createIdentifier(q,line));
         }else if(e.startsWith(Parser.LANGUAGE)){
-
+            this.lsElements.add(Language.createLanguage(q,line));
         }else if(e.startsWith(Parser.NOTE)){
-
+            this.lsElements.add(Description.createDescription("note",line));
         }else if(e.startsWith(Parser.PUBLISHER)){
-
+            this.lsElements.add(Publisher.createPublisher(q,line));
         }else if(e.startsWith(Parser.RELATION)) {
             for(String s : line.split(Parser.SPLIT_HEADER)){
-                addSeries(s);
+                this.lsElements.add(Relation.createRelation(q,line));
             }
         }else if(e.startsWith(Parser.RIGHTS)){
-
+            this.lsElements.add(Rights.createRights(q,line));
         }else if(e.startsWith(Parser.RIGHTSHOLDER)){
-
+            throw new NotImplementedException();
         }else if(e.startsWith(Parser.SUBJECT)){
-
+            this.lsElements.add(Subject.createSubject(q,line)); //TODO remove in place of body?
         }else if(e.startsWith(Parser.TITLE)){
-            if(q.isEmpty()){ addTitle(line); } else{ addAltTitle(line); }
+            this.lsElements.add(Title.createTitle(q,line));
         }else if(e.startsWith(Parser.TYPE)){
-
+            this.lsElements.add(new Type(line));
         }else{
             toReturn = false;
+
             //TODO flag line with option as a warning/error including option and raw line
+            System.err.println("!!! ERROR: '" + optionText + "' not recognized by parser!!!");
         }
 
         //TODO add logger line
@@ -122,63 +124,16 @@ public class Item {
         this.filename = line.trim();
     }
 
-
-    /* - dc.title - */
-
-    public void addTitle(String title){
-        lsElements.add(new Title(title));
-
-        System.out.println("+ dc.description.title: " + title);
-    }
-
-    public void addAltTitle(String altTitle){
-        lsElements.add(new Title(Title.qualifier.ALTERNATIVE, altTitle));
-    }
-
-    /* - dc.type - */
-    public void addType(String type){
-        lsElements.add( new Type(type) );
-    }
-
-    /* - dc.description - */
-
-    /** add new basic description to the item*/
-    private void addDesciption(String line) {
-        lsElements.add( new Description(line) );
-    }
-
     /** add an article to the item*/
     public void addArticle(String articleTitle){
-        lsElements.add( new Description(Description.qualifiers.TABLE_OF_CONTENTS, articleTitle));
+        lsElements.add( Description.createDescription("table_of_contents", articleTitle));
     }
-
-    /** add cataloguer's note regarding the item */
-    public void addNote(String line) {
-        lsElements.add( new Description(Description.qualifiers.NOTE, line));
-    }
-
-    /* - dc.date - */
-
-    public void addDateIssued(String line) {
-        //TODO
-        throw new NotImplementedException();
-    }
-
     /* - dc.contributor - */
-    public void addContributor(String qualifier, String value){
-        lsElements.add( Contributor.createContributor(qualifier, value));
+    public void addContributor(String qualifier, String value) {
+        lsElements.add(Contributor.createContributor(qualifier, value));
     }
 
-    /* - other - */
-
-    /** add dc.relation.isPartOfSeries element */
-    public void addSeries(String part) {
-        lsElements.add(new Relation(Relation.qualifier.IS_PART_OF, part));
+    public void addNote(String line){
+        this.addElementType(Parser.DESCRIPTION + "_" + "NOTE",line);
     }
-
-    public void addPublisher(String publisher) {
-        //TODO
-        throw new NotImplementedException();
-    }
-
 }

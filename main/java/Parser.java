@@ -15,7 +15,7 @@ public class Parser {
     public static String SPLIT_HEADER = ",";
     //private static String SPLIT_HEADER_TITLE = "|";
 
-    //options (elements)
+    //options (elements+filename+'note')
     public static String AUDIENCE       = "AUDIENCE";
     public static String COVERAGE       = "COVERAGE";
     public static String DATE           = "DATE";

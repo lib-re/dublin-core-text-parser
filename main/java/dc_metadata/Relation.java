@@ -5,15 +5,22 @@ package dc_metadata;
  */
 public class Relation extends Element {
 
-    public enum qualifier{
-        CONFORMS_TO,
-        HAS_FORMAT, HAS_PART, HAS_VERSION,
-        IS_FORMAT_OF, IS_PART_OF, IS_REFERENCED_BY, IS_REPLACED_BY, IS_REQUIRED_BY, IS_VERSION_OF,
-        REFERENCES,
-        REPLACES,
-        REQUIRES,
-        SOURCE,
-    }
+    //alternative, article, series
+    private static final String URI          = "uri";
+    private static final String CONFORMSTO   = "conformsTo";
+    private static final String ISFORMATOF   = "isFormatOf";
+    private static final String HASFORMAT    = "hasFormat";
+    private static final String ISPARTSERIES = "isPartOfSeries";
+    private static final String ISPARTOF     = "isPartOf";
+    private static final String HASPART      = "hasPart";
+    private static final String REFERENCEDBY = "isReferencedBy";
+    private static final String REFERENCES   = "references";
+    private static final String ISREQUIREDBY = "isRequriedBy";
+    private static final String REQUIRES     = "requires";
+    private static final String ISREPLACEDBY = "isReplacedBy";
+    private static final String REPLACES     = "replaces";
+    private static final String ISVERSIONOF  = "isVersionOf";
+    private static final String HASVERSION   = "hasVersion";
 
     private Relation(){
         uri = "http://purl.org/dc/elements/1.1/relation";
@@ -22,18 +29,36 @@ public class Relation extends Element {
         definition = "A related resource.";
     }
 
-    public Relation(String value){
-        this();
-        this.value = value;
+    public static Relation createRelation(String qualifierText, String value){
+        Relation r = new Relation();
+        r.value = value;
+        r.qualifier = determineQualifier(qualifierText);
+        return r;
     }
 
-    public Relation(qualifier q, String value){
-        this(value);
-        switch(q){
-            case IS_PART_OF: this.qualifier = "ispartofseries"; break;
-            default:
-                this.qualifier = q.toString().replace(" ","");
-        }
+    private static String determineQualifier(String str){
+        str = str.trim().replace("_","").toLowerCase();
+
+        if(str.isEmpty()){ return ""; }
+        else if(str.contains("version")){
+            return str.contains("has")? HASVERSION : ISVERSIONOF;
+        }else if(str.contains("replace")){
+            return str.contains("dby")? ISREPLACEDBY : REPLACES;
+        }else if(str.contains("require")){
+            return str.contains("dby")? ISREQUIREDBY : REQUIRES;
+        }else if(str.contains("reference")){
+            return str.contains("dby")? REFERENCEDBY : REFERENCES;
+        }else if(str.contains("part")){
+            if(str.contains("partof")){
+                return str.contains("series")? ISPARTSERIES : ISPARTOF;
+            }else{
+                return HASPART;
+            }
+        }else if(str.contains("format")){
+            return str.contains("has")? HASFORMAT : ISFORMATOF;
+        }else if(str.contains("conform")){ return CONFORMSTO; }
+        else if(str.contains("uri")){ return URI; }
+        else{ return ""; }
     }
 
 }

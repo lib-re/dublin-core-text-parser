@@ -5,12 +5,10 @@ package dc_metadata;
  */
 public class Title extends Element {
 
-    //alternative, article, series
-    public enum qualifier {
-        ALTERNATIVE,
-        ARTICLE,
-        SERIES
-    }
+    //refinements
+    private static final String ALTERNATIVE = "alternative";
+    private static final String ARTICLE     = "article";
+    private static final String SERIES      = "series";
 
 
     /**
@@ -23,26 +21,19 @@ public class Title extends Element {
         definition = "A name given to the resource.";
     }
 
-    /**
-     * Create a title with a given passed in value.
-     */
-    public Title(String title){
-        this();
-        this.value = title;
+    public static Title createTitle(String qualifierText, String value){
+        Title t = new Title();
+        t.value = value;
+        t.qualifier = determineQualifier(qualifierText);
+        return t;
     }
 
-    /**
-     * Create Title with qualifier
-     */
-    public Title(qualifier q, String altTitle){
-        this(altTitle);
-
-        switch (q){
-            case ALTERNATIVE: this.qualifier = "alternative"; break;
-            case ARTICLE:     this.qualifier = "article";     break;
-            case SERIES:      this.qualifier = "series";      break;
-            default:          this.qualifier = "";
-        }
+    private static String determineQualifier(String str) {
+        str=str.toLowerCase();
+        if(str.contains("alternative")){  return ALTERNATIVE; }
+        else if(str.contains("article")){ return ARTICLE;     }
+        else if(str.contains("series")){  return SERIES;      }
+        else{                             return "";          }
     }
 
 }
