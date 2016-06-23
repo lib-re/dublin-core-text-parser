@@ -177,7 +177,7 @@ public class Parser {
 
                 //if we read an all caps field, switch contributor type
                 if (isAllCaps(line)) {
-                    System.out.print("PARSER: switch contributor type: '" + this.current_qualifier + "' to ");
+                    System.out.print("PARSER: switch contributor type from '" + this.current_qualifier + "' to ");
 
                     this.current_qualifier = line;
 

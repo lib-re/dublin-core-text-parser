@@ -98,14 +98,19 @@ public class Contributor extends Element {
 
         //prefix anything that's not a name with a
         if(line.startsWith(DELIM_NONNAME))
-            return line;
+            return line.replace("*","");
 
-
+        //split names
         String[] names = line.split(" ");
-        String lName = names[names.length-1];
-        String fName = line.substring(0, line.length() - lName.length() );
+        if(names.length == 1){
+            //single word entries should not be appended with anything.
+            return line.trim();
+        }else{
+            String lName = names[names.length-1];
+            String fName = line.substring(0, line.length() - lName.length() );
 
-        return lName + ", " + fName;
+            return lName + ", " + fName;
+        }
     }
 
     // - matching - //
