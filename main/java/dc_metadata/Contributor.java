@@ -160,7 +160,7 @@ public class Contributor extends Element {
         //OTHER
         else{ q = OTHER; }
 
-        System.out.println("dc: " + line + " -> " + /*"dc.contributor." + */ q); //TODO convert to Logger
+        //System.out.println("dc: " + line + " -> " + /*"dc.contributor." + */ q); //TODO convert to Logger
 
         return q;
     }

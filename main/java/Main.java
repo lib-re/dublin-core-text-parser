@@ -11,10 +11,20 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class Main {
 
+    //delimitors
     public static String DELIM_SHARED = "|";
-    public static String DIRECTORY_PATH_IN  = "./main/sample_data";
-    public static String DIRECTORY_PATH_OUT = "/Users/admin/Desktop/Out";
+    public static String DIRECTORY_PATH_IN  = "./main/sample_data/";
+    public static String DIRECTORY_PATH_CONF  = "./main/config/";
+    public static String DIRECTORY_PATH_OUT   = "./main/output/";
 
+
+    /**
+     * Main function responsible for taking in user input at the command line,
+     *   handling flags, and directing overall behavior of the program.
+     * @param args list of files (?)
+     * @throws IOException
+     * @throws ParseException
+     */
     public static void main(String[] args) throws IOException, ParseException {
 
         // - get input from the user command line - //
@@ -91,7 +101,8 @@ public class Main {
 
         //set the shared
         if (true){ //commandLine.hasOption('s')) {
-            List<String> lsSharedLines = processFileIntoStringArray("./main/shared.csv"); //commandLine.getOptionValue('s').trim());
+            List<String> lsSharedLines = processFileIntoStringArray(DIRECTORY_PATH_CONF + "shared.csv");
+            //commandLine.getOptionValue('s').trim()); TODO set option to specify other file
 
             ArrayList<String[]> lsShared2D = new ArrayList<String[]>();
             for(String line : lsSharedLines ) {
@@ -105,11 +116,11 @@ public class Main {
 
         //go through each of the files,
 
-        int id = 1000;
+        int id = 1;
         //foreach file in the directory...
 
-            String waldo = "/sample-metadata-file.txt";
-            String report= "/1990-v123n04.txt";
+            String waldo = "sample-metadata-file.txt";
+            String report= "1990-v123n04.txt";
             String[] lsFiles = {waldo, report };
 
             for(String filename : lsFiles) {
@@ -126,8 +137,7 @@ public class Main {
         boolean exp_MRK = commandLine.hasOption('M');   boolean exp_mrk = commandLine.hasOption('m');
         boolean exp_JSN = commandLine.hasOption('J');   boolean exp_jsn = commandLine.hasOption('j');
 
-
-
+        //...
 
         for(Item i : p.getLsItems()){ System.out.println(i); }
     }

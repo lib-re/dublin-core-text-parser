@@ -41,14 +41,12 @@ public class Parser {
     private enum mode { CONTRIBUTORS, ARTICLES }
     private mode current_mode = mode.CONTRIBUTORS;
 
-    //qualifier
-    private String current_qualifier = Contributor.AUTHOR;
-
     //critical elements
-    ArrayList<String> lsHeaderOptions;
-    ArrayList<String[]> lsShared;
-    ArrayList<Item> lsItems;
-    Item current_item;
+    private ArrayList<String> lsHeaderOptions;
+    private ArrayList<String[]> lsShared;
+    private ArrayList<Item> lsItems;
+    private Item current_item;
+    private String current_qualifier = Contributor.AUTHOR;
 
 
     // - constructors - //
@@ -201,8 +199,6 @@ public class Parser {
 
         //add current_item to lsItems
         lsItems.add(current_item);
-
-        System.out.println(current_item);
 
         return true;
     }
