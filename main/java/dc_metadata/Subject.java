@@ -22,7 +22,7 @@ public class Subject extends Element {
     public static Subject createSubject(String encodingText, String value){
         Subject a = new Subject();
         a.value = value;
-        a.encoding = determineEncoding(encodingText);
+        a.qualifier = determineEncoding(encodingText);
         return a;
     }
 

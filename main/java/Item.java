@@ -180,5 +180,10 @@ public class Item {
         lsElements.add(Description.createDescription("_NOTE",line));
     }
 
+    /** add a subject */
+    public void addSubject(String qualifier, String line){
+        lsElements.add(Subject.createSubject(qualifier, line));
+    }
+
 
 }

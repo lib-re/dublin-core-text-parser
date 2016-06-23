@@ -1,4 +1,5 @@
 import dc_metadata.Contributor;
+import dc_metadata.Subject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,6 @@ public class Parser {
     private static final String DELIM_NOTE = "//";
     public static String SPLIT_OPTION = "_";
     public static String SPLIT_HEADER = ",";
-    public static String SPLIT_HEADER_TITLE = "%";
 
     //options (elements+filename+'note')
     public static String AUDIENCE       = "AUDIENCE";
@@ -38,15 +38,15 @@ public class Parser {
                 NOTE, PUBLISHER, RELATION, RIGHTS, RIGHTSHOLDER, SUBJECT, TITLE, TYPE };
 
     //modes
-    private enum mode { CONTRIBUTORS, ARTICLES }
+    private enum mode { CONTRIBUTORS, ARTICLES, SUBJECT }
     private mode current_mode = mode.CONTRIBUTORS;
 
     //critical elements
     private ArrayList<String> lsHeaderOptions;
     private ArrayList<String[]> lsShared;
     private ArrayList<Item> lsItems;
-    private Item current_item;
-    private String current_qualifier = Contributor.AUTHOR;
+    private String current_qualifier = "";
+    private String current_encoding = "";
 
 
     // - constructors - //
@@ -124,7 +124,7 @@ public class Parser {
     public boolean processMetadataFile(List<String> lsFileLines, int id){
 
         //item to be added
-        current_item = new Item(id);
+        Item current_item = new Item(id);
 
         int i = 0;
         for(String line : lsFileLines) {
@@ -149,7 +149,7 @@ public class Parser {
             //change mode according to tags
             else if (matchModeSwitchString(line)) {
 
-                //System.out.print("MODE_SWITCH: " + this.current_mode + " -> "); TODO replace with logger
+                System.out.print("MODE_SWITCH: " + this.current_mode + " -> "); //TODO replace with logger
 
                 //switch to adding contributors
                 if (matchContributor(line)) {
@@ -157,11 +157,15 @@ public class Parser {
                 }
 
                 //switch to adding articles
-                if (matchTableOfContents(line)) {
+                else if (matchTableOfContents(line)) {
                     this.current_mode = mode.ARTICLES;
                 }
 
-                //System.out.println(current_mode); TODO replace with logger
+                else if (matchSubject(line)){
+                    this.current_mode = mode.SUBJECT;
+                }
+
+                System.out.println(current_mode); //TODO replace with logger
 
             }
 
@@ -189,12 +193,22 @@ public class Parser {
                     current_item.addContributor(this.current_qualifier, line);
                 }
 
+            }else if (current_mode == mode.SUBJECT) {
+
+                //update the encoding for the subject
+                if (isAllCaps(line)){
+                    this.current_encoding = line;
+                    System.out.println("encoding set to: " + line);
+                }else{
+                    current_item.addSubject(this.current_encoding, line);
+                }
+
             }
         }//(end for loop through line of file)
 
         //add the shared element values to the item.
         for(String[] s2D : this.lsShared){
-            this.current_item.addElementType(s2D[0],s2D[1]);
+            current_item.addElementType(s2D[0],s2D[1]);
         }
 
         //add current_item to lsItems
@@ -245,6 +259,11 @@ public class Parser {
     /** dc.description.tableOfContents */
     private static boolean matchTableOfContents(String str){
         return (str.contains("TABLE") && str.contains("OF") && str.contains("CONTENT") ) || str.contains("ARTICLE");
+    }
+
+    /** dc.subject.* */
+    private static boolean matchSubject(String str){
+        return str.contains("SUBJECT") || str.contains("TAG") || str.contains("KEYWORD");
     }
 
 
