@@ -2,6 +2,8 @@ import dc_metadata.*;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -13,7 +15,7 @@ public class Item {
     public int id;
 
     //name of the file in the same directory
-    public String filename = "";
+    public List<String> lsFilenames;
 
     //list of all the data Elements
     private ArrayList<Element> lsElements;
@@ -24,6 +26,7 @@ public class Item {
     public Item(int i){
         this.id = i;
         this.lsElements = new ArrayList<Element>();
+        this.lsFilenames = new ArrayList<String>();
     }
 
     // - print/export functions - //
@@ -43,7 +46,16 @@ public class Item {
      */
     @Override
     public final String toString(){
-        String header = "---- Item " + id + ": " + filename + " ----";
+        String header = "---- Item " + id + ": ";
+
+            //list filenames
+            int i = 0;
+            for(String s: this.lsFilenames) {
+                if (lsFilenames.size() > 1 && i >= 1) { header += ", "; }
+                header += s; i++;
+            }
+        header+= " ----";
+
         String toReturn = header;
         toReturn += "\n";
         for (Element e: lsElements ) {
@@ -60,51 +72,66 @@ public class Item {
     /* - determine element type by option - */
     public boolean addElementType(String optionText, String line){
 
-        boolean toReturn = true;
+        //whether or not the element was successfully added.
+        boolean added = true;
 
-        String[] options = optionText.split("_");
+        //determine Element (e) and Qualifier (q) options
+        String[] options = optionText.split(Parser.SPLIT_OPTION);
         String e = options[0];
 
         String q = "";
         if(options.length>1)
             q = options[1];
 
-        if(e.startsWith(Parser.AUDIENCE)) {
-            this.lsElements.add(Audience.createAudience(q,line));
-        }else if(e.startsWith(Parser.COVERAGE)){
-            this.lsElements.add(Coverage.createCoverage(q,line));
-        }else if(e.startsWith(Parser.DATE)){
-            this.lsElements.add(Date.createDate(q,line));
-        }else if(e.startsWith(Parser.DESCRIPTION)){
-            this.lsElements.add(Description.createDescription(q,line));
-        }else if(e.startsWith(Parser.FILENAME)){
-            addFilename(line);
-        }else if(e.startsWith(Parser.FORMAT)){
-            this.lsElements.add(Format.createFormat(q,line));
-        }else if(e.startsWith(Parser.IDENTIFIER)){
-            this.lsElements.add(Identifier.createIdentifier(q,line));
-        }else if(e.startsWith(Parser.LANGUAGE)){
-            this.lsElements.add(Language.createLanguage(q,line));
-        }else if(e.startsWith(Parser.NOTE)){
-            this.lsElements.add(Description.createDescription("note",line));
-        }else if(e.startsWith(Parser.PUBLISHER)){
-            this.lsElements.add(Publisher.createPublisher(q,line));
-        }else if(e.startsWith(Parser.RELATION)) {
-            for(String s : line.split(Parser.SPLIT_HEADER)){
-                this.lsElements.add(Relation.createRelation(q,line));
-            }
-        }else if(e.startsWith(Parser.RIGHTS)){
-            this.lsElements.add(Rights.createRights(q,line));
-        }else if(e.startsWith(Parser.RIGHTSHOLDER)){
-            throw new NotImplementedException();
-        }else if(e.startsWith(Parser.SUBJECT)){
-            this.lsElements.add(Subject.createSubject(q,line)); //TODO remove in place of body?
+
+        //add once or using different split character
+        if(e.startsWith(Parser.DATE)) {
+            this.lsElements.add(Date.createDate(q, line));
         }else if(e.startsWith(Parser.TITLE)){
-            this.lsElements.add(Title.createTitle(q,line));
-        }else if(e.startsWith(Parser.TYPE)){
-            this.lsElements.add(new Type(line));
-        }else{
-            toReturn = false;
+            for (String value : line.split("\\|",-1)) {
+                this.lsElements.add(Title.createTitle(q, value.trim()));
+            }
+        } else if (e.startsWith(Parser.PUBLISHER)) {
+            for (String value : line.split("\\|",-1)) {
+                this.lsElements.add(Publisher.createPublisher(q, value.trim()));
+            }
+        }
+
+        //handle multiple values in one header line:
+        for(String s : line.split(Parser.SPLIT_HEADER)) {
+            s = s.trim();
+
+            if (e.startsWith(Parser.FILENAME)) {
+                addFilename(s);
+            } else if (e.startsWith(Parser.AUDIENCE)) {
+                this.lsElements.add(Audience.createAudience(q, s));
+            } else if (e.startsWith(Parser.COVERAGE)) {
+                this.lsElements.add(Coverage.createCoverage(q, s));
+            } else if (e.startsWith(Parser.DESCRIPTION)) {
+                this.lsElements.add(Description.createDescription(q, s));
+            } else if (e.startsWith(Parser.FORMAT)) {
+                this.lsElements.add(Format.createFormat(q, s));
+            } else if (e.startsWith(Parser.IDENTIFIER)) {
+                this.lsElements.add(Identifier.createIdentifier(q, s));
+            } else if (e.startsWith(Parser.LANGUAGE)) {
+                this.lsElements.add(Language.createLanguage(q, s));
+            } else if (e.startsWith(Parser.NOTE)) {
+                this.lsElements.add(Description.createDescription("note", s));
+            } else if (e.startsWith(Parser.RELATION)) {
+                this.lsElements.add(Relation.createRelation(q, s));
+            } else if (e.startsWith(Parser.RIGHTS)) {
+                this.lsElements.add(Rights.createRights(q, s));
+            } else if (e.startsWith(Parser.RIGHTSHOLDER)) {
+                throw new NotImplementedException();
+            } else if (e.startsWith(Parser.SUBJECT)) {
+                this.lsElements.add(Subject.createSubject(q, s)); //TODO remove in place of body?
+            } else if (e.startsWith(Parser.TYPE)) {
+                this.lsElements.add(new Type(s));
+            }
+        }
+
+        if(!Arrays.asList( Parser.ALL_OPTIONS ).contains(e)){
+            added = false;
 
             //TODO flag line with option as a warning/error including option and raw line
             System.err.println("!!! ERROR: '" + optionText + "' not recognized by parser!!!");
@@ -113,27 +140,36 @@ public class Item {
         //TODO add logger line
 
         //return whether or not it was added
-        return toReturn;
+        return added;
     }
+
+
+    // - Adding functions - //
+
+    /* - special - */
 
     /**
      * add the name of the file associated with the file
      * TODO verify the file is valid, flag if it is not.
      */
     public void addFilename(String line) {
-        this.filename = line.trim();
+        this.lsFilenames.add(line.trim());
     }
 
     /** add an article to the item*/
     public void addArticle(String articleTitle){
         lsElements.add( Description.createDescription("table_of_contents", articleTitle));
     }
-    /* - dc.contributor - */
+
+    /** add a contributor - */
     public void addContributor(String qualifier, String value) {
         lsElements.add(Contributor.createContributor(qualifier, value));
     }
 
+    /** add a note : DESCRIPTION_NOTE -> dc.description.note */
     public void addNote(String line){
-        this.addElementType(Parser.DESCRIPTION + "_" + "NOTE",line);
+        lsElements.add(Description.createDescription("_NOTE",line));
     }
+
+
 }

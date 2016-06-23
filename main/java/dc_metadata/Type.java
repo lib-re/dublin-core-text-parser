@@ -41,7 +41,7 @@ public class Type extends Element{
      */
     public Type(String s){
         this();
-        this.qualifier = s;
+        this.value = s; //TODO add controlled vocabulary
     }
 
 
@@ -49,6 +49,7 @@ public class Type extends Element{
      * Create a 'Type' Element of
      */
     public Type(value v){
+
         this();
 
         switch (v){

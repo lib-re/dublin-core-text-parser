@@ -12,7 +12,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Main {
 
     public static String DELIM_SHARED = "|";
-    public static String DIRECTORY_PATH_IN  = "/Users/admin/Desktop/";
+    public static String DIRECTORY_PATH_IN  = "./main/sample_data";
     public static String DIRECTORY_PATH_OUT = "/Users/admin/Desktop/Out";
 
     public static void main(String[] args) throws IOException, ParseException {
@@ -90,12 +90,14 @@ public class Main {
         }
 
         //set the shared
-        if (commandLine.hasOption('s')) {
-            List<String> lsSharedLines = processFileIntoStringArray(commandLine.getOptionValue('s').trim());
+        if (true){ //commandLine.hasOption('s')) {
+            List<String> lsSharedLines = processFileIntoStringArray("./main/shared.csv"); //commandLine.getOptionValue('s').trim());
 
             ArrayList<String[]> lsShared2D = new ArrayList<String[]>();
-            for(String line : lsSharedLines )
-                lsShared2D.add(line.split(DELIM_SHARED));
+            for(String line : lsSharedLines ) {
+                lsShared2D.add(line.split(",",2));
+                //System.out.println("__add shared line: '" + line + "'"); TODO Replace with Logger
+            }
 
             //export according to
             p.setShared(lsShared2D);
@@ -106,10 +108,9 @@ public class Main {
         int id = 1000;
         //foreach file in the directory...
 
-            String focus = "/NF-1969-02.txt";
             String waldo = "/sample-metadata-file.txt";
             String report= "/1990-v123n04.txt";
-            String[] lsFiles = {focus, waldo, report };
+            String[] lsFiles = {waldo, report };
 
             for(String filename : lsFiles) {
                 p.processMetadataFile(processFileIntoStringArray(DIRECTORY_PATH_IN + filename), id);

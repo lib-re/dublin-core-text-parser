@@ -12,8 +12,9 @@ public class Parser {
     //delimiters
     private static final String DELIM_MODESWITCH = "-";
     private static final String DELIM_NOTE = "//";
+    public static String SPLIT_OPTION = "_";
     public static String SPLIT_HEADER = ",";
-    //private static String SPLIT_HEADER_TITLE = "|";
+    public static String SPLIT_HEADER_TITLE = "%";
 
     //options (elements+filename+'note')
     public static String AUDIENCE       = "AUDIENCE";
@@ -32,7 +33,7 @@ public class Parser {
     public static String SUBJECT        = "SUBJECT";
     public static String TITLE          = "TITLE";
     public static String TYPE           = "TYPE";
-    private static String[] ALL_OPTIONS =
+    public static String[] ALL_OPTIONS =
             { AUDIENCE, COVERAGE, DATE, DESCRIPTION, FILENAME, FORMAT, IDENTIFIER, LANGUAGE,
                 NOTE, PUBLISHER, RELATION, RIGHTS, RIGHTSHOLDER, SUBJECT, TITLE, TYPE };
 
@@ -68,9 +69,9 @@ public class Parser {
          * 4: filename                  |   'filename.pdf'
          */
         lsHeaderOptions.add(TITLE);
-        lsHeaderOptions.add(RELATION + "_" + "ISPARTOFSERIES");
-        lsHeaderOptions.add(DATE + "_" + "ISSUED");
-        lsHeaderOptions.add(TITLE + "_" + "ALTERNATIVE");
+        lsHeaderOptions.add(RELATION + SPLIT_OPTION + "ISPARTOFSERIES");
+        lsHeaderOptions.add(DATE + SPLIT_OPTION + "ISSUED");
+        lsHeaderOptions.add(TITLE + SPLIT_OPTION + "ALTERNATIVE");
         lsHeaderOptions.add(FILENAME);
 
         //initialize list of shared values
@@ -106,8 +107,9 @@ public class Parser {
         //iterate through list, adding
         ArrayList<String> lsSharedOptions = new ArrayList<String>();
         for(String[] line : shared){ //for each line in the
-            lsSharedOptions.add(line[0]);
-            this.lsShared.add(line);
+            lsSharedOptions.add(line[0]);       //System.out.println("add option: " + line[0]); TODO Logger
+            String[] toAdd = {line[0], line[1]};
+            this.lsShared.add(toAdd);           //System.out.println("add value:  " + line[1]); TODO Logger
         }
 
         //validate the set of shared values. if not validated, clear
@@ -149,7 +151,7 @@ public class Parser {
             //change mode according to tags
             else if (matchModeSwitchString(line)) {
 
-                System.out.print("MODE_SWITCH: " + this.current_mode + " -> ");
+                //System.out.print("MODE_SWITCH: " + this.current_mode + " -> "); TODO replace with logger
 
                 //switch to adding contributors
                 if (matchContributor(line)) {
@@ -161,7 +163,7 @@ public class Parser {
                     this.current_mode = mode.ARTICLES;
                 }
 
-                System.out.println(current_mode);
+                //System.out.println(current_mode); TODO replace with logger
 
             }
 
@@ -177,13 +179,14 @@ public class Parser {
 
                 //if we read an all caps field, switch contributor type
                 if (isAllCaps(line)) {
-                    System.out.print("PARSER: switch contributor type from '" + this.current_qualifier + "' to ");
+                    //System.out.print("PARSER: switch contributor type from '" + this.current_qualifier + "' to ");
+                    //TODO Replace with Logger
 
                     this.current_qualifier = line;
 
-                    System.out.println("'" + this.current_qualifier + "'");
+                    //System.out.println("'" + this.current_qualifier + "'"); TODO Replace with Logger
 
-                    //add appropriate contributor qualifier type
+                //add appropriate contributor qualifier type
                 } else {
                     current_item.addContributor(this.current_qualifier, line);
                 }
@@ -216,8 +219,11 @@ public class Parser {
 
         List<String> lsAllOptions = Arrays.asList(ALL_OPTIONS);
         for(String o : lsOptions) {
-            if (!lsAllOptions.contains(o))
+            if(o.isEmpty()){ continue; }
+            else if (!lsAllOptions.contains(o)) {
+                System.err.println("Option " + o + " invalid");
                 return false;
+            }
         }
         return true;
     }
