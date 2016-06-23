@@ -3,7 +3,7 @@ package dc_metadata;
 /**
  * Abstract representation of a DublinCore Element
  */
-public abstract class Element {
+public abstract class Element implements Comparable{
 
     //data elements pertaining to Dublin Core Documentation
     protected String uri = "";
@@ -46,4 +46,27 @@ public abstract class Element {
     /* - qualifier - */
     public String getQualifier() { return this.qualifier; }
 
+    public String getName(){ return this.name; }
+
+    public String getValue(){ return this.value; }
+
+    public int compareTo(Object o) {
+
+        String x1 = ((Element) o).getName();
+        int sComp = (name.toLowerCase()).compareTo(x1.toLowerCase());
+
+        if (sComp != 0) {
+            return sComp;
+        } else {
+            String x2 = ((Element) o).getQualifier();
+            sComp = (qualifier.toLowerCase()).compareTo(x2.toLowerCase());
+
+            if(sComp != 0){
+                return sComp;
+            }else{
+                String x3 = ((Element) o).getValue();
+                return (value).compareTo(x3);
+            }
+        }
+    }
 }

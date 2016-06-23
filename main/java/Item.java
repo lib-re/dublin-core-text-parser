@@ -3,6 +3,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -11,6 +12,9 @@ import java.util.List;
  */
 public class Item {
 
+    //settings
+    private boolean SETTING_TOSORT = true;
+
     //identification number in series
     public int id;
 
@@ -18,7 +22,7 @@ public class Item {
     public List<String> lsFilenames;
 
     //list of all the data Elements
-    private ArrayList<Element> lsElements;
+    private List<Element> lsElements;
 
     /**
      * Create an item of a given ID and no elements.
@@ -58,7 +62,12 @@ public class Item {
 
         String toReturn = header;
         toReturn += "\n";
-        for (Element e: lsElements ) {
+
+        //sort the items for printing according to setting [ alphabetically by E.name->E.qualifier->E.value ]
+        if(SETTING_TOSORT)
+            Collections.sort(lsElements);
+
+        for (Element e: lsElements){
             toReturn += "-> " + e.toString() + "\n";
         }
 
