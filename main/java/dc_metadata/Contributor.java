@@ -62,15 +62,15 @@ public class Contributor extends Element {
 
     /**
      * Return a contributor object whose qualifier has been selected with care.
-     * @param qualifierText
+     * @param qualifierText the raw text from the metadata file
      * @param fullName TODO switch to pass a 'Person' object
-     * @return
      */
     public static Contributor createContributor(String qualifierText, String fullName) {
         String qualifier = determineContributorQualifier(qualifierText);
         String value = determineName(fullName);
 
-        System.out.println("CONTRIBUTOR-created | qualifier: " + qualifier + ", value: " + value);
+        //System.out.println("CONTRIBUTOR-created | qualifier: " + qualifier + ", value: " + value);
+        //TODO replace with Logger
 
         return new Contributor(qualifier, value);
     }
@@ -78,8 +78,6 @@ public class Contributor extends Element {
     /**
      * return a processed name...
      * TODO figure out what all should or can be done at this stage to make this better formatted.
-     * @param valueText
-     * @return
      */
     private static String determineName(String valueText) {
 
@@ -91,8 +89,6 @@ public class Contributor extends Element {
     /**
      * process a contributor line into a formatted line
      *  e.g. "fName mName mInitial lName" into "lName, fName mName mInitial lName"
-     * @param line
-     * @return
      */
     private static String processName(String line){
 
@@ -118,34 +114,55 @@ public class Contributor extends Element {
     /** given the all caps line, return which Contributor.qualifier type it represents, using help functions */
     private static String determineContributorQualifier(String line) {
 
+        String q = OTHER;
+
         //AUTHOR/WRITER
-        if(matchAuthor(line)               ){ return AUTHOR;           }
+        if(matchAuthor(line)               ){ q = AUTHOR;           }
 
         //EDITOR
         else if (matchEditor(line)) {
-            if( matchExecutive(line)       ){ return EDITOR_EXECUTIVE; }
-            else if( matchArt(line)        ){ return EDITOR_ART;       }
-            else if( matchFeature(line)    ){ return EDITOR_FEATURE;   }
-            else if( matchManaging(line)   ){ return EDITOR_MANAGING;  }
-            else if( matchCopy(line)       ){ return EDITOR_COPY;      }
-            else if( matchPhoto(line)      ){ return EDITOR_PHOTO;     }
-            else if( matchSports(line)     ){ return EDITOR_SPORTS;    }
-            else if( matchNews(line)       ){ return EDITOR_NEWS;      }
-            else                            { return EDITOR;           }
+            if( matchExecutive(line)       ){ q = EDITOR_EXECUTIVE; }
+            else if( matchArt(line)        ){ q = EDITOR_ART;       }
+            else if( matchFeature(line)    ){ q = EDITOR_FEATURE;   }
+            else if( matchManaging(line)   ){ q = EDITOR_MANAGING;  }
+            else if( matchCopy(line)       ){ q = EDITOR_COPY;      }
+            else if( matchPhoto(line)      ){ q = matchAsst(line)? EDITOR_PHOTO_ASST : EDITOR_PHOTO;     }
+            else if( matchSports(line)     ){ q = EDITOR_SPORTS;    }
+            else if( matchNews(line)       ){ q = EDITOR_NEWS;      }
+            else if( matchCampus(line)     ){ q = EDITOR_CAMPUS;    }
+            else if( matchDeputy(line)     ){ q = EDITOR_DEPUTY_MAN;}
+            else if( matchGraphic(line)    ){ q =EDITOR_GRAPHIC_ART;}
+            else                            { q = EDITOR;           }
         }
 
         //ADVISOR, ARTIST, DESIGNER, ILLUSTRATOR, PHOTOGRAPHER, MANAGING(_BUSINESS)
-        else if( matchAdvisor(line)        ){ return ADVISOR;          }
-        else if( matchArtist(line)         ){ return ARTIST;           }
-        else if( matchDesigner(line)       ){ return DESIGNER;         }
-        else if( matchIllustrator(line)    ){ return ILLUSTRATOR;      }
-        else if( matchPhotographer(line)   ){ return PHOTOGRAPHER;     }
+        else if( matchAdvisor(line)){
+             if( matchChair(line)){ q = matchDept(line)? ADVISOR_DEPT_CHAIR : ADVISOR_CHAIR;    }
+             else{                            q = ADVISOR;          }
+        }
+        else if( matchActor(line)          ){ q = ACTOR;            }
+        else if( matchArtist(line)         ){ q = ARTIST;           }
+        else if( matchDesigner(line)       ){ q = DESIGNER;         }
+        else if( matchDirector(line)       ){ q = DIRECTOR;         }
+        else if( matchIllustrator(line)    ){ q = ILLUSTRATOR;      }
+        else if( matchOrganization(line)   ){ q = ORGANIZATION;     }
+        else if( matchPhotographer(line)   ){ q = PHOTOGRAPHER;     }
+        else if( matchProducer(line)       ){ q = PRODUCER;         }
+        else if( matchReporter(line)       ){ q = REPORTER;         }
+
+
         else if( matchManaging(line)){
-            return matchBusiness(line)? MANAGER_BUSINESS : OTHER;
+             if( matchAdvertising(line)    ){ q = MANAGER_ADVERTIS; }
+             if( matchBusiness(line)       ){ q = MANAGER_BUSINESS; }
+             if( matchPhoto(line)          ){ q = MANAGER_PHOTO;    }
         }
 
         //OTHER
-        else{ return OTHER; }
+        else{ q = OTHER; }
+
+        System.out.println("dc: " + line + " -> " + /*"dc.contributor." + */ q); //TODO convert to Logger
+
+        return q;
     }
 
 
@@ -153,7 +170,7 @@ public class Contributor extends Element {
     /* - Editors - */
 
     /* EDITOR */
-    public static boolean matchEditor( String str ){
+    public static boolean matchEditor(String str ){
         return str.contains("EDITOR");
     }
 
@@ -235,6 +252,42 @@ public class Contributor extends Element {
         return str.contains("AUTHOR") || str.contains("WRITER");
     }
 
+    /* ACTOR */
+    private static boolean matchActor(String str) { return str.contains("ACTOR"); }
 
+    /* Director */
+    private static boolean matchDirector(String str) { return str.contains("DIRECTOR"); }
+
+    /* ORGANIZATION */
+    private static boolean matchOrganization(String str) { return str.contains("ORGANIZ"); }
+
+    /* GRAPHIC */
+    private static boolean matchGraphic(String str) { return str.contains("GRAPHIC"); }
+
+    /* PRODUCER */
+    private static boolean matchProducer(String str) { return str.contains("PRODUCE"); }
+
+    /* ADVERTISING */
+    public static boolean matchAdvertising(String str){ return str.contains("ADVERT"); }
+
+    /* REPORTER */
+    public static boolean matchReporter(String str){ return str.contains("REPORTER"); }
+
+    /* .CHAIR */
+    public static boolean matchChair(String str) { return str.contains("CHAIR"); }
+
+    /* .DEPT */
+    private static boolean matchDept(String str) { return str.contains("DEPT"); }
+
+    /* .DEPUTY */
+    private static boolean matchDeputy(String str) { return str.contains("DEPUTY"); }
+
+    /* .CAMPUS */
+    private static boolean matchCampus(String str) { return str.contains("CAMPUS"); }
+
+    /* .ASST */
+    private static boolean matchAsst(String str) {
+        return str.contains("ASST") || str.contains("ASSIST");
+    }
 
 }
