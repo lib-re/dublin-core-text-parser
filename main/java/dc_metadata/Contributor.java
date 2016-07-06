@@ -112,7 +112,7 @@ public class Contributor extends Element {
     // - matching - //
 
     /** given the all caps line, return which Contributor.qualifier type it represents, using help functions */
-    private static String determineContributorQualifier(String line) {
+    protected static String determineContributorQualifier(String line) {
 
         String q = OTHER;
 
@@ -122,16 +122,16 @@ public class Contributor extends Element {
         //EDITOR
         else if (matchEditor(line)) {
             if( matchExecutive(line)       ){ q = EDITOR_EXECUTIVE; }
-            else if( matchArt(line)        ){ q = EDITOR_ART;       }
+            else if( matchArt(line)        ){ q = matchGraphic(line)? EDITOR_GRAPHIC_ART : EDITOR_ART;       }
             else if( matchFeature(line)    ){ q = EDITOR_FEATURE;   }
-            else if( matchManaging(line)   ){ q = EDITOR_MANAGING;  }
+            else if( matchManaging(line)   ){
+                q = (matchDeputy(line) || matchAsst(line)) ? EDITOR_DEPUTY_MAN : EDITOR_MANAGING;  }
             else if( matchCopy(line)       ){ q = EDITOR_COPY;      }
             else if( matchPhoto(line)      ){ q = matchAsst(line)? EDITOR_PHOTO_ASST : EDITOR_PHOTO;     }
             else if( matchSports(line)     ){ q = EDITOR_SPORTS;    }
             else if( matchNews(line)       ){ q = EDITOR_NEWS;      }
             else if( matchCampus(line)     ){ q = EDITOR_CAMPUS;    }
-            else if( matchDeputy(line)     ){ q = EDITOR_DEPUTY_MAN;}
-            else if( matchGraphic(line)    ){ q =EDITOR_GRAPHIC_ART;}
+            else if( matchGraphic(line)    ){ q = EDITOR_GRAPHIC_ART;}
             else                            { q = EDITOR;           }
         }
 
@@ -176,7 +176,7 @@ public class Contributor extends Element {
 
     /* EXECUTIVE */
     public static boolean matchExecutive( String str ){
-        return str.contains("EXECUTIVE");
+        return str.contains("EXECUTIVE") || str.contains("CHIEF");
     }
 
     /* ART */
@@ -268,7 +268,9 @@ public class Contributor extends Element {
     private static boolean matchProducer(String str) { return str.contains("PRODUCE"); }
 
     /* ADVERTISING */
-    public static boolean matchAdvertising(String str){ return str.contains("ADVERT"); }
+    public static boolean matchAdvertising(String str){
+        return str.contains("ADVERT") || str.contains("AD ") || str.contains(" ADS");
+    }
 
     /* REPORTER */
     public static boolean matchReporter(String str){ return str.contains("REPORTER"); }
@@ -277,7 +279,7 @@ public class Contributor extends Element {
     public static boolean matchChair(String str) { return str.contains("CHAIR"); }
 
     /* .DEPT */
-    private static boolean matchDept(String str) { return str.contains("DEPT"); }
+    private static boolean matchDept(String str) { return str.contains("DEPT") || str.contains("DEPARTMENT"); }
 
     /* .DEPUTY */
     private static boolean matchDeputy(String str) { return str.contains("DEPUTY"); }

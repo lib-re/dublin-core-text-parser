@@ -1,6 +1,3 @@
-import dc_metadata.Contributor;
-import dc_metadata.Subject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +35,7 @@ public class Parser {
                 NOTE, PUBLISHER, RELATION, RIGHTS, RIGHTSHOLDER, SUBJECT, TITLE, TYPE };
 
     //modes
-    private enum mode { CONTRIBUTORS, ARTICLES, SUBJECT }
+    protected enum mode { CONTRIBUTORS, ARTICLES, SUBJECT, NULL }
     private mode current_mode = mode.CONTRIBUTORS;
 
     //critical elements
@@ -149,24 +146,15 @@ public class Parser {
             //change mode according to tags
             else if (matchModeSwitchString(line)) {
 
-                System.out.print("MODE_SWITCH: " + this.current_mode + " -> "); //TODO replace with logger
+                mode m = determineMode(line);
 
-                //switch to adding contributors
-                if (matchContributor(line)) {
-                    this.current_mode = mode.CONTRIBUTORS;
+                //check mode is valid, then log modeswitch
+                if(m.equals(mode.NULL)) {
+                    System.err.println("ERROR! " + line + "cannot be processed into new "); //TODO replace with logger
+                }else {
+                    System.out.print("MODE_SWITCH: " + this.current_mode + " -> " + m); //TODO replace with logger
+                    this.current_mode = m;
                 }
-
-                //switch to adding articles
-                else if (matchTableOfContents(line)) {
-                    this.current_mode = mode.ARTICLES;
-                }
-
-                else if (matchSubject(line)){
-                    this.current_mode = mode.SUBJECT;
-                }
-
-                System.out.println(current_mode); //TODO replace with logger
-
             }
 
             // - process the body - //
@@ -242,9 +230,30 @@ public class Parser {
         return str.equals(str.toUpperCase());
     }
 
+    /**
+     * determine whether or not the given string contains any of the target
+     *   strings.
+     * @param target array of strings to which you are matching the given
+     * @param given any string which you want to determine
+     * @return whether the given string contains any of the target strings
+     */
+    private static boolean containsAny(String[] target, String given){
+        for(String s : target){ if(given.contains(s)){ return true; } }
+        return false;
+    }
+
     // - match functions - //
 
     /* - Mode Entry - */
+
+    protected static mode determineMode(String str){
+
+        if(matchTableOfContents(str) ){ return mode.ARTICLES; }
+        else if(matchContributor(str)){ return mode.CONTRIBUTORS; }
+        else if(matchSubject(str)    ){ return mode.SUBJECT; }
+        else{                           return mode.NULL; }
+
+    }
 
     /** mode-switch */
     private static boolean matchModeSwitchString(String str){
@@ -253,17 +262,19 @@ public class Parser {
 
     /** dc.contributor */
     private static boolean matchContributor(String str){
-        return str.contains("CONTRIB") || str.contains("COLLABORATOR");
+        return str.contains("CONTRIB") || str.contains("COLLABORAT");
     }
 
     /** dc.description.tableOfContents */
     private static boolean matchTableOfContents(String str){
-        return (str.contains("TABLE") && str.contains("OF") && str.contains("CONTENT") ) || str.contains("ARTICLE");
+        String[] target_toc = { "INDEX", "CONTENTS", "ARTICLES" }; //expand
+        return containsAny(target_toc, str);
     }
 
     /** dc.subject.* */
     private static boolean matchSubject(String str){
-        return str.contains("SUBJECT") || str.contains("TAG") || str.contains("KEYWORD");
+        String[] target_subject = { "SUBJECT", "TAG", "KEYWORD", "TOPIC" };
+        return containsAny(target_subject, str);
     }
 
 
@@ -272,7 +283,6 @@ public class Parser {
     private static boolean matchComment(String str){
         return str.startsWith(DELIM_NOTE);
     }
-
 
     /* - getters and setters */
     public List<Item> getLsItems(){
