@@ -1,5 +1,9 @@
 package dc_metadata;
 
+import org.pmw.tinylog.Logger;
+
+import java.util.HashMap;
+
 /**
  * Representation for a Contributor element.
  */
@@ -67,10 +71,9 @@ public class Contributor extends Element {
      */
     public static Contributor createContributor(String qualifierText, String fullName) {
         String qualifier = determineContributorQualifier(qualifierText);
-        String value = determineName(fullName);
+        String value = determineName(fullName).trim();
 
-        //System.out.println("CONTRIBUTOR-created | qualifier: " + qualifier + ", value: " + value);
-        //TODO replace with Logger
+        Logger.trace("CONTRIBUTOR created | qualifier: {}, value: {}.", qualifier, value);
 
         return new Contributor(qualifier, value);
     }
@@ -159,8 +162,6 @@ public class Contributor extends Element {
 
         //OTHER
         else{ q = OTHER; }
-
-        //System.out.println("dc: " + line + " -> " + /*"dc.contributor." + */ q); //TODO convert to Logger
 
         return q;
     }

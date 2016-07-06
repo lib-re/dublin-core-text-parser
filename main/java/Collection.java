@@ -1,3 +1,5 @@
+import org.pmw.tinylog.Logger;
+
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class Collection {
 
     /** create basic collection with default config file, no shared, new items list*/
     public Collection(){
-        this.configFile = new File("../config.tx");
+        this.configFile = new File(Main.DIRECTORY_PATH_CONF + "config.txt");
         this.lsItems = new ArrayList<Item>();
     }
 
@@ -89,10 +91,10 @@ public class Collection {
             }
 
         }catch(FileNotFoundException fnfe){
-            System.out.println(error + "File not found. !!");
+            Logger.error("File '{}' not found!", filename);
             fnfe.printStackTrace();
         }catch(IOException ioe){
-            System.out.println(error + "Error parsing file. !!");
+            Logger.error("Error parsing file '{}'!", filename);
             ioe.printStackTrace();
         }
 

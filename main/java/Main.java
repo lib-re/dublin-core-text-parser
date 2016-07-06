@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.cli.*;
+import org.pmw.tinylog.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -13,10 +14,13 @@ public class Main {
 
     //delimitors
     public static String DELIM_SHARED = "|";
-    public static String DIRECTORY_PATH_IN  = "./main/sample_data/";
-    public static String DIRECTORY_PATH_CONF  = "./main/config/";
-    public static String DIRECTORY_PATH_OUT   = "./main/output/";
+    public static String DIRECTORY_PATH_IN  = "./main/sample_data/"; //TODO allow custom path
+    public static String DIRECTORY_PATH_CONF  = "./main/config/";    //TODO allow custom path
+    public String DIRECTORY_PATH_OUT   = "./main/output/";    //TODO allow custom path
+    public String DIRECTORY_PATH_LOG   = "./main/logs/";
 
+
+    // - public facing back end
 
     /**
      * Main function responsible for taking in user input at the command line,
@@ -94,7 +98,7 @@ public class Main {
             List<String> lsOptions = processFileIntoStringArray(commandLine.getOptionValue('c').trim());
 
             if( !p.setHeaderOptions(lsOptions) ){
-                System.out.println("!!! Error: Invalid config file !!! "); //TODO replace with logger.error
+                Logger.error("Invalid configuration file! Please check spelling and documentation.");
                 System.exit(1);
             }
         }
@@ -107,11 +111,10 @@ public class Main {
             ArrayList<String[]> lsShared2D = new ArrayList<String[]>();
             for(String line : lsSharedLines ) {
                 lsShared2D.add(line.split(",",2));
-                //System.out.println("__add shared line: '" + line + "'"); TODO Replace with Logger
             }
 
             //export according to
-            p.setShared(lsShared2D);
+            p.setShared(lsShared2D); //TODO check return value
         }
 
         //go through each of the files,
@@ -119,11 +122,14 @@ public class Main {
         int id = 1;
         //foreach file in the directory...
 
+            String report= "1993-v74n03.txt";
+            String focus = "NTIDFocus-1976-11.txt";
             String waldo = "sample-metadata-file.txt";
-            String report= "1990-v123n04.txt";
-            String[] lsFiles = {waldo, report };
+            String sample= "1990-v123n04.txt";
+            String[] lsFiles = {report, focus, waldo, sample };
 
             for(String filename : lsFiles) {
+                String path = DIRECTORY_PATH_IN + filename;
                 p.processMetadataFile(processFileIntoStringArray(DIRECTORY_PATH_IN + filename), id);
                 id++;
             }
@@ -139,8 +145,18 @@ public class Main {
 
         //...
 
-        for(Item i : p.getLsItems()){ System.out.println(i); }
+        for(Item i : p.getLsItems()){ System.out.println(i); } //TODO change out.
     }
+
+
+    // - execution object code - //
+
+    public Main(){
+
+    }
+
+
+    // - helpers - //
 
     /**
      * Read all lines of a file, return list of strings.

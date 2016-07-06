@@ -1,3 +1,5 @@
+import org.pmw.tinylog.Logger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,14 +38,13 @@ public class Parser {
 
     //modes
     protected enum mode { CONTRIBUTORS, ARTICLES, SUBJECT, NULL }
-    private mode current_mode = mode.CONTRIBUTORS;
+    private mode current_mode = mode.NULL;
 
     //critical elements
     private ArrayList<String> lsHeaderOptions;
     private ArrayList<String[]> lsShared;
     private ArrayList<Item> lsItems;
-    private String current_qualifier = "";
-    private String current_encoding = "";
+    private String current_qualifier;
 
 
     // - constructors - //
@@ -101,15 +102,18 @@ public class Parser {
 
         //iterate through list, adding
         ArrayList<String> lsSharedOptions = new ArrayList<String>();
-        for(String[] line : shared){ //for each line in the
-            lsSharedOptions.add(line[0]);       //System.out.println("add option: " + line[0]); TODO Logger
+        for(String[] line : shared){ //for each line in the shared file
+            lsSharedOptions.add(line[0]); //option
             String[] toAdd = {line[0], line[1]};
-            this.lsShared.add(toAdd);           //System.out.println("add value:  " + line[1]); TODO Logger
+            this.lsShared.add(toAdd);
+
+            Logger.trace("Added shared value '{}:{}'",line[0],line[1]);
         }
 
         //validate the set of shared values. if not validated, clear
         if(!isValidOptions(lsSharedOptions)){
             this.lsShared.clear();
+            Logger.warn("Collection-level warning: 'shared.csv' file is not accurately formatted or is empty");
             return false;
         }
 
@@ -150,9 +154,9 @@ public class Parser {
 
                 //check mode is valid, then log modeswitch
                 if(m.equals(mode.NULL)) {
-                    System.err.println("ERROR! " + line + "cannot be processed into new "); //TODO replace with logger
+                    Logger.error("{} cannot be processed into an appropriate element.", line);
                 }else {
-                    System.out.print("MODE_SWITCH: " + this.current_mode + " -> " + m); //TODO replace with logger
+                    Logger.trace("Mode switched from {} to {}.", this.current_mode, m);
                     this.current_mode = m;
                 }
             }
@@ -169,26 +173,26 @@ public class Parser {
 
                 //if we read an all caps field, switch contributor type
                 if (isAllCaps(line)) {
-                    //System.out.print("PARSER: switch contributor type from '" + this.current_qualifier + "' to ");
-                    //TODO Replace with Logger
 
+                    Logger.trace("Contributor type switched from '{}' to '{}'", this.current_qualifier, line);
                     this.current_qualifier = line;
 
-                    //System.out.println("'" + this.current_qualifier + "'"); TODO Replace with Logger
 
                 //add appropriate contributor qualifier type
                 } else {
                     current_item.addContributor(this.current_qualifier, line);
+                    Logger.trace("Added new contributor: {}", line);
                 }
 
             }else if (current_mode == mode.SUBJECT) {
 
                 //update the encoding for the subject
                 if (isAllCaps(line)){
-                    this.current_encoding = line;
-                    System.out.println("encoding set to: " + line);
+                    this.current_qualifier = line;
+                    Logger.trace("subject qualifier set to '{}'.",line);
                 }else{
-                    current_item.addSubject(this.current_encoding, line);
+                    current_item.addSubject(this.current_qualifier, line);
+                    Logger.trace("dc.subject.{} added: {}",current_qualifier, line);
                 }
 
             }
@@ -219,7 +223,7 @@ public class Parser {
         for(String o : lsOptions) {
             if(o.isEmpty()){ continue; }
             else if (!lsAllOptions.contains(o)) {
-                System.err.println("Option " + o + " invalid");
+                Logger.warn("Option '{}' invalid", o);
                 return false;
             }
         }

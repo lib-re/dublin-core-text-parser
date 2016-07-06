@@ -1,4 +1,5 @@
 import dc_metadata.*;
+import org.pmw.tinylog.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ public class Item {
     //list of all the data Elements
     private List<Element> lsElements;
 
+    //list of all the warnings
+    private List<String> lsWarnings;
+
     /**
      * Create an item of a given ID and no elements.
      */
@@ -31,6 +35,7 @@ public class Item {
         this.id = i;
         this.lsElements = new ArrayList<Element>();
         this.lsFilenames = new ArrayList<String>();
+        this.lsWarnings = new ArrayList<String>();
     }
 
     // - print/export functions - //
@@ -83,6 +88,7 @@ public class Item {
 
         //whether or not the element was successfully added.
         boolean added = true;
+        line = line.trim();
 
         //determine Element (e) and Qualifier (q) options
         String[] options = optionText.split(Parser.SPLIT_OPTION);
@@ -142,11 +148,13 @@ public class Item {
         if(!Arrays.asList( Parser.ALL_OPTIONS ).contains(e)){
             added = false;
 
-            //TODO flag line with option as a warning/error including option and raw line
-            System.err.println("!!! ERROR: '" + optionText + "' not recognized by parser!!!");
-        }
+            //
+            String warnText = String.format("'{}:{}' not added to item {}.",optionText,line,this.id);
+            this.lsWarnings.add(warnText);
 
-        //TODO add logger line
+            Logger.warn("{} not recognized by option parser!", optionText);
+            Logger.warn(warnText);
+        }
 
         //return whether or not it was added
         return added;
