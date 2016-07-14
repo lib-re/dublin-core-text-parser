@@ -250,7 +250,7 @@ public class Contributor extends Element {
 
     /* WRITER/AUTHOR */
     public static boolean matchAuthor( String str ){
-        return str.contains("AUTHOR") || str.contains("WRITER");
+        return str.contains("AUTHOR") || str.contains("WRITER") || str.contains("COLUMNIST");
     }
 
     /* ACTOR */
