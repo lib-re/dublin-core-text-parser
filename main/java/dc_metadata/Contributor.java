@@ -290,7 +290,7 @@ public class Contributor extends Element {
 
     /* .ASST */
     private static boolean matchAsst(String str) {
-        return str.contains("ASST") || str.contains("ASSIST");
+        return str.contains("ASST") || str.contains("ASSIST") || str.contains("ASSOCIATE");
     }
 
 }
