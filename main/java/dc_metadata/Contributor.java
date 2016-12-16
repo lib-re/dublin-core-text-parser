@@ -146,12 +146,12 @@ public class Contributor extends Element {
         else if( matchActor(line)          ){ q = ACTOR;            }
         else if( matchArtist(line)         ){ q = ARTIST;           }
         else if( matchDesigner(line)       ){ q = DESIGNER;         }
-        else if( matchDirector(line)       ){ q = DIRECTOR;         }
+        else if( matchDirector(line)       ){ q = matchArt(line)? EDITOR_ART : DIRECTOR;        }
         else if( matchIllustrator(line)    ){ q = ILLUSTRATOR;      }
         else if( matchOrganization(line)   ){ q = ORGANIZATION;     }
         else if( matchPhotographer(line)   ){ q = PHOTOGRAPHER;     }
         else if( matchProducer(line)       ){ q = PRODUCER;         }
-        else if( matchReporter(line)       ){ q = REPORTER;         }
+        else if( matchReporter(line)       ){ q = AUTHOR;           }
 
 
         else if( matchManaging(line)){
@@ -161,7 +161,7 @@ public class Contributor extends Element {
         }
 
         //OTHER
-        else{ q = OTHER; }
+        else{ q = AUTHOR
 
         return q;
     }
