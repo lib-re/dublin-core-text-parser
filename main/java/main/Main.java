@@ -1,3 +1,5 @@
+package main;
+
 import java.io.*;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -8,16 +10,17 @@ import org.pmw.tinylog.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
- * Main user-facing class. Directs all actions.
+ * main.Main user-facing class. Directs all actions.
  */
 public class Main {
 
-    //delimitors
+    //delimiters
     public static String DELIM_SHARED = "|";
     public static String DIRECTORY_PATH_IN  = "./main/sample_data/"; //TODO allow custom path
     public static String DIRECTORY_PATH_CONF  = "./main/config/";    //TODO allow custom path
-    public String DIRECTORY_PATH_OUT   = "./main/output/";    //TODO allow custom path
+    public static String DIRECTORY_PATH_OUT   = "./main/output/";    //TODO allow custom patt
     public String DIRECTORY_PATH_LOG   = "./main/logs/";
+    private String EXPORT_FILENAME     = "export"; //name of each exported file in 'output/' (collection name)
 
 
     // - public facing back end
@@ -122,11 +125,9 @@ public class Main {
         int id = 1;
         //foreach file in the directory...
 
-            String report= "1993-v74n03.txt";
-            String focus = "NTIDFocus-1976-11.txt";
             String waldo = "sample-metadata-file.txt";
             String sample= "1990-v123n04.txt";
-            String[] lsFiles = {report, focus, waldo, sample };
+            String[] lsFiles = { waldo, sample };
 
             for(String filename : lsFiles) {
                 String path = DIRECTORY_PATH_IN + filename;
@@ -138,12 +139,26 @@ public class Main {
 
         // - export in desired formats - //
 
+        String exportFilename = "export";
+
+        // get desired format/s from command line
         boolean exp_csv = commandLine.hasOption('C');
         boolean exp_XML = commandLine.hasOption('X');   boolean exp_xml = commandLine.hasOption('x');
-        boolean exp_MRK = commandLine.hasOption('M');   boolean exp_mrk = commandLine.hasOption('m');
+        //boolean exp_MRK = commandLine.hasOption('M');   boolean exp_mrk = commandLine.hasOption('m');
         boolean exp_JSN = commandLine.hasOption('J');   boolean exp_jsn = commandLine.hasOption('j');
 
-        //...
+        //
+        List<Exporter> lsExporters = new ArrayList<Exporter>();
+
+        if(exp_csv){ lsExporters.add( new export.CSVExporter() ); }
+        //if(exp_XML){ lsExporters.add( new XMLExporter() ); }
+        //if(exp_JSN){ lsExporters.add( new JSNExporter() ); }
+        //if(exp_bib){ lsExporters.add( new BibExporter() ); }
+
+        for(Exporter e : lsExporters){
+            //e.processCollection(p);
+            e.publish(new File(DIRECTORY_PATH_OUT), exportFilename);
+        }
 
         for(Item i : p.getLsItems()){ System.out.println(i); } //TODO change out.
     }

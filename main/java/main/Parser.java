@@ -1,3 +1,5 @@
+package main;
+
 import org.pmw.tinylog.Logger;
 
 import java.util.ArrayList;
@@ -5,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Parser object which interprets a given text file and creates an interpreted 'Item' object
+ * main.Parser object which interprets a given text file and creates an interpreted 'main.Item' object
  */
 public class Parser {
 
@@ -32,19 +34,20 @@ public class Parser {
     public static String SUBJECT        = "SUBJECT";
     public static String TITLE          = "TITLE";
     public static String TYPE           = "TYPE";
-    public static String[] ALL_OPTIONS =
+    public static String[] ALL_OPTIONS  =
             { AUDIENCE, COVERAGE, DATE, DESCRIPTION, FILENAME, FORMAT, IDENTIFIER, LANGUAGE,
                 NOTE, PUBLISHER, RELATION, RIGHTS, RIGHTSHOLDER, SUBJECT, TITLE, TYPE };
 
     //modes
-    protected enum mode { CONTRIBUTORS, ARTICLES, SUBJECT, NULL }
-    private mode current_mode = mode.NULL;
+    public enum mode { CONTRIBUTORS, ARTICLES, SUBJECT, NULL }
+    protected mode current_mode = mode.NULL;
 
     //critical elements
     private ArrayList<String> lsHeaderOptions;
     private ArrayList<String[]> lsShared;
     private ArrayList<Item> lsItems;
     private String current_qualifier;
+
 
 
     // - constructors - //
@@ -54,21 +57,8 @@ public class Parser {
      */
     public Parser(){
 
-        //initialize header options
-        lsHeaderOptions = new ArrayList<String>();
-
-        /* set to default header:
-         * 0: title                     |   'Title of the Issue'
-         * 1: relation.isPartOfSeries   |   'Volume ##, Number ##, "
-         * 2: date.issued               |   '1993-03-26'
-         * 3: title.alternative         |   ''
-         * 4: filename                  |   'filename.pdf'
-         */
-        lsHeaderOptions.add(TITLE);
-        lsHeaderOptions.add(RELATION + SPLIT_OPTION + "ISPARTOFSERIES");
-        lsHeaderOptions.add(DATE + SPLIT_OPTION + "ISSUED");
-        lsHeaderOptions.add(TITLE + SPLIT_OPTION + "ALTERNATIVE");
-        lsHeaderOptions.add(FILENAME);
+        //initialize header
+        initHeader();
 
         //initialize list of shared values
         lsShared = new ArrayList<String[]>();
@@ -212,6 +202,24 @@ public class Parser {
 
     // - helpers - //
 
+    private void initHeader(){
+        //initialize header options
+        lsHeaderOptions = new ArrayList<String>();
+
+        /* set to default header:
+         * 0: title                     |   'Title of the Issue'
+         * 1: relation.isPartOfSeries   |   'Volume ##, Number ##, "
+         * 2: date.issued               |   '1993-03-26'
+         * 3: title.alternative         |   ''
+         * 4: filename                  |   'filename.pdf'
+         */
+        lsHeaderOptions.add(TITLE);
+        lsHeaderOptions.add(RELATION + SPLIT_OPTION + "ISPARTOFSERIES");
+        lsHeaderOptions.add(DATE + SPLIT_OPTION + "ISSUED");
+        lsHeaderOptions.add(TITLE + SPLIT_OPTION + "ALTERNATIVE");
+        lsHeaderOptions.add(FILENAME);
+    }
+
     /**
      * check list of header options sent in to see if they are valid
      * @param lsOptions the set of custom options the user established for the header
@@ -250,7 +258,7 @@ public class Parser {
 
     /* - Mode Entry - */
 
-    protected static mode determineMode(String str){
+    public static mode determineMode(String str){
 
         if(matchTableOfContents(str) ){ return mode.ARTICLES; }
         else if(matchContributor(str)){ return mode.CONTRIBUTORS; }

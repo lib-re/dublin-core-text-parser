@@ -1,12 +1,13 @@
+import main.Parser;
 import org.junit.Test;
 import org.junit.Assert;
 
 /**
- * Ensure proper functioning of the Parser,
+ * Ensure proper functioning of the main.Parser,
  */
 public class TestParser {
 
-    Parser.mode m = Parser.mode.NULL;
+    public Parser.mode m = Parser.mode.NULL;
 
     @Test
     public void testModeSwitches(){
@@ -16,7 +17,7 @@ public class TestParser {
         Assert.assertEquals(m,Parser.determineMode("-TABLE_OF_CONTENTS-"));
         Assert.assertEquals(m,Parser.determineMode("-CONTENTS-"));
         Assert.assertEquals(m,Parser.determineMode("-ARTICLES-"));
-        Assert.assertEquals(m,Parser.determineMode("-INDEX-"));
+        Assert.assertEquals(m, Parser.determineMode("-INDEX-"));
 
         m = Parser.mode.CONTRIBUTORS;
         Assert.assertEquals(m,Parser.determineMode("-CONTRIBUTORS-"));

@@ -67,7 +67,7 @@ public class Contributor extends Element {
     /**
      * Return a contributor object whose qualifier has been selected with care.
      * @param qualifierText the raw text from the metadata file
-     * @param fullName TODO switch to pass a 'Person' object
+     * @param fullName TODO switch to pass a 'main.Person' object
      */
     public static Contributor createContributor(String qualifierText, String fullName) {
         String qualifier = determineContributorQualifier(qualifierText);
@@ -161,7 +161,7 @@ public class Contributor extends Element {
         }
 
         //OTHER
-        else{ q = AUTHOR
+        else{ q = AUTHOR; }
 
         return q;
     }

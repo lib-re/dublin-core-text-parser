@@ -1,3 +1,5 @@
+package main;
+
 import dc_metadata.*;
 import org.pmw.tinylog.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

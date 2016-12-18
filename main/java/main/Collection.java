@@ -1,7 +1,8 @@
+package main;
+
 import org.pmw.tinylog.Logger;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -56,10 +57,6 @@ public class Collection {
             return 0;
         }
 
-        return 0; //TODO
-    }
-
-    public int processFile(File f){
         return 0; //TODO
     }
 
