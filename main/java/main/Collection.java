@@ -1,7 +1,5 @@
 package main;
 
-import org.pmw.tinylog.Logger;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -58,80 +56,6 @@ public class Collection {
         }
 
         return 0; //TODO
-    }
-
-    // -- CONFIG -- //
-
-
-    // -- SHARED -- //
-
-    /** parse through shared.csv file and return 2D list */
-    private static ArrayList< String[][] > processShared(String filename){
-
-        ArrayList< String[][] > lsShared = new ArrayList<String[][]>();
-
-        String line = "";
-        String error = "!! Error reading shared.csv file: ";
-        BufferedReader br = null;
-
-        try{
-            br = new BufferedReader( new FileReader(filename) );
-
-            int i = 0;
-            String[][] data = new String[1][];
-            while((line = br.readLine()) != null){
-                String[] contents = line.split(",",2);
-                data[i][0] = contents[1];
-                data[i][1] = contents[2];
-                lsShared.add(data);
-                i++;
-            }
-
-        }catch(FileNotFoundException fnfe){
-            Logger.error("File '{}' not found!", filename);
-            fnfe.printStackTrace();
-        }catch(IOException ioe){
-            Logger.error("Error parsing file '{}'!", filename);
-            ioe.printStackTrace();
-        }
-
-        return lsShared;
-    }
-
-
-    // -- EXPORT -- //
-
-
-    /* single file */
-
-    /** export collection to single CSV file */
-    public File exportToCSV(String filename){
-        return null; //TODO
-    }
-
-    /** export collection to giant xml */
-    public File exportToXML(String filename){
-        return null; //TODO
-    }
-
-    /** export collection to single json file */
-    public File exportToJSON(String filename){
-        return null; //TODO
-    }
-
-    /** export collection to single mark file */
-    public File exportToMARK(String filename){
-        return null; //TODO
-    }
-
-    /* multiple files */
-    public File exportToXMLEach(String filename){
-        return null; //TODO
-    }
-
-    /* multiple files */
-    public File exportToJSONEach(String filename){
-        return null; //TODO
     }
 
 

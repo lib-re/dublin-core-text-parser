@@ -18,7 +18,7 @@ public class Main {
     public static String DELIM_SHARED = "|";
     public static String DIRECTORY_PATH_IN  = "./main/sample_data/"; //TODO allow custom path
     public static String DIRECTORY_PATH_CONF  = "./main/config/";    //TODO allow custom path
-    public static String DIRECTORY_PATH_OUT   = "./main/output/";    //TODO allow custom patt
+    public static String DIRECTORY_PATH_OUT   = "../output/";        //TODO allow custom path
     public String DIRECTORY_PATH_LOG   = "./main/logs/";
     private String EXPORT_FILENAME     = "export"; //name of each exported file in 'output/' (collection name)
 
@@ -160,7 +160,9 @@ public class Main {
             e.publish(new File(DIRECTORY_PATH_OUT), exportFilename);
         }
 
-        for(Item i : p.getLsItems()){ System.out.println(i); } //TODO change out.
+        for(Item i : p.getLsItems()){
+            System.out.println(i);
+        } //TODO change out.
     }
 
 
