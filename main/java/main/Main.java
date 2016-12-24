@@ -150,25 +150,16 @@ public class Main {
         //
         List<Exporter> lsExporters = new ArrayList<Exporter>();
 
+        lsExporters.add( new export.TXTExporter() );
         if(exp_csv){ lsExporters.add( new export.CSVExporter() ); }
         //if(exp_XML){ lsExporters.add( new XMLExporter() ); }
         //if(exp_JSN){ lsExporters.add( new JSNExporter() ); }
         //if(exp_bib){ lsExporters.add( new BibExporter() ); }
 
         for(Exporter e : lsExporters){
-            //e.processCollection(p);
-            e.publish(new File(DIRECTORY_PATH_OUT), exportFilename);
+            e.processCollection(p.getCollection());
+            //e.publish(new File(DIRECTORY_PATH_OUT), exportFilename);
         }
-
-        for(Item i : p.getLsItems()){
-            System.out.println(i);
-        } //TODO change out.
-    }
-
-
-    // - execution object code - //
-
-    public Main(){
 
     }
 

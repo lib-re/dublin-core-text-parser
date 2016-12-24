@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * main.Parser object which interprets a given text file and creates an interpreted 'main.Item' object
+ * Parser object which interprets a given text file and creates an interpreted 'Item' object
  */
 public class Parser {
 
@@ -45,7 +45,7 @@ public class Parser {
     //critical elements
     private ArrayList<String> lsHeaderOptions;
     private ArrayList<String[]> lsShared;
-    private ArrayList<Item> lsItems;
+    private Collection collection;
     private String current_qualifier;
 
 
@@ -63,8 +63,9 @@ public class Parser {
         //initialize list of shared values
         lsShared = new ArrayList<String[]>();
 
-        //initialize list of items
-        lsItems = new ArrayList<Item>();
+        //initialize collection
+        collection = new Collection();
+
     }
 
 
@@ -88,6 +89,9 @@ public class Parser {
         return this.lsHeaderOptions.addAll(lsHeaderLines);
     }
 
+    /**
+     * populate the list of shared values from a given array
+     */
     public boolean setShared(List<String[]> shared){
 
         //iterate through list, adding
@@ -194,13 +198,15 @@ public class Parser {
         }
 
         //add current_item to lsItems
-        lsItems.add(current_item);
+        addItem(current_item);
 
         return true;
     }
 
 
     // - helpers - //
+
+    private void addItem(Item i){ this.collection.addItem(i); }
 
     private void initHeader(){
         //initialize header options
@@ -296,9 +302,10 @@ public class Parser {
         return str.startsWith(DELIM_NOTE);
     }
 
-    /* - getters and setters */
-    public List<Item> getLsItems(){
-        return this.lsItems;
+
+    /* - getters and setters - */
+    public Collection getCollection(){
+        return this.collection;
     }
 
 }

@@ -23,8 +23,6 @@ public class Collection {
     }
 
 
-    // -- PROCESS -- //
-
     /**
      * Process all of the appropriate files in the given directory
      * @param directoryPath string for absolute path of directory
@@ -58,5 +56,10 @@ public class Collection {
         return 0; //TODO
     }
 
+    public void addItem(Item i){ lsItems.add(i); }
+
+    public ArrayList<Item> getLsItems(){
+        return this.lsItems;
+    }
 
 }
