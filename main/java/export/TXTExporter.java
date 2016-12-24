@@ -13,9 +13,4 @@ public class TXTExporter extends main.Exporter {
         return i.toString();
     }
 
-    @Override
-    public void processCollection(Collection c){
-        super.processCollection(c);
-    }
-
 }

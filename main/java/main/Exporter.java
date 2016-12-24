@@ -10,21 +10,25 @@ import java.io.PrintStream;
  */
 public abstract class Exporter {
 
+    // parts of the exported document, possibly reused
+    protected static String header;
+    protected static String footer;
     protected PrintStream ps;
 
+    /**
+     * create default Exporter with System.out as its printstream
+     */
     public Exporter(){
         ps = System.out;
     }
 
+    /**
+     * create Exporter with a particular printstream
+     */
     public Exporter(PrintStream printStream){
         this.ps = printStream;
     }
 
-    protected String fileText;
-
-    // parts of the exported document, possibly reused
-    protected static String header;
-    protected static String footer;
 
     /**
      * process the header, items, and footers for each item in the collection
@@ -42,7 +46,9 @@ public abstract class Exporter {
         processFooter();
     }
 
-    // process
+    /**
+     * determine and return the export string for a given item
+     */
     protected abstract String processItem(Item i);
 
     /**
