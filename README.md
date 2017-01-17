@@ -34,7 +34,7 @@ After completion of the above tasks, the text files can be discarded as
 
 | Flag | .ext | Description |
 |:-------|:--------:|:-----------------------------------------------------------------------------|
-| C | .csv   | output originally intended for use with [DSPace-Labs/SAFBuilder](https://github.com/DSpace-Labs/SAFBuilder)].|
+| C | .csv   | output originally intended for use with [DSPace-Labs/SAFBuilder](https://github.com/DSpace-Labs/SAFBuilder).|
 | ~~X,x~~ | ~~.xml~~ |[One or many] is a commonly used in SOAP APIs |
 |~~J,j~~|~~.json~~|[One or many] is commonly used by REST APIs|
 |~~M~~|~~.mrk~~|MARC format which will likely need to be compiled into .mrc|
