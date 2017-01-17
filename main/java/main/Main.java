@@ -35,27 +35,30 @@ public class Main {
     public static void main(String[] args) throws IOException, ParseException {
 
         // - get input from the user command line - //
-
+        String header = "A cataloguing tool for converting specially formatted text files containing dublin " +
+                "core metadata into various formats\n";
+        String footer = "";
         CommandLineParser posixParser = new PosixParser();
         Options options = new Options();
 
         //print-outs for help executing the program
-        options.addOption("d", "dublin-core", false, "Display help for dublin core fields");
-        options.addOption("h", "help", false, "Display the Help");
+        //options.addOption("d", "dublin-core", false, "Display help for dublin core fields");
+        options.addOption("h", "help", false, "Display the help information");
+        options.addOption("o", "output", true, "Name the output file");
         //options.addOption("i", "interactive", false, "Make the execution interactive");
         //options.addOption("q", "quiet", false, "Suppress logging information");
 
         //extra files for custom execution
         options.addOption("c", "config", true, "Reference to a file containing alternative header arrangements");
-        options.addOption("s", "shared", true, "file location of the shared.txt file containing the shared fields");
+        options.addOption("s", "shared", true, "file location of the shared.csv file containing the shared fields");
 
 
         //export options
 
         /* one file for entire collection */
         options.addOption("C", "csv",  false, "Create a single .csv  file containing metadata of each item");
-        //options.addOption("M", "mrk",  false, "Create a single .mrk  file containing metadata of each item");
-        //options.addOption("J", "json", false, "Create a single .json file containing metadata of each item");
+        options.addOption("M", "mrk",  false, "Create a single .mrk  file containing metadata of each item");
+        options.addOption("J", "json", false, "Create a single .json file containing metadata of each item");
         options.addOption("X", "xml",  false, "Create a single .xml  file containing metadata of each item");
 
         /* one file for each item */
@@ -80,8 +83,9 @@ public class Main {
 
         //display help information for program
         if(commandLine.hasOption('h')) {
-            throw new NotImplementedException();
-            //System.exit(0);
+            HelpFormatter helpFormatter = new HelpFormatter();
+            helpFormatter.printHelp("dublin-core-text-parser\n", header + "\n\n\n", options, footer, false);
+            System.exit(0);
         }
 
         //display help information for dublin core
@@ -190,10 +194,10 @@ public class Main {
             // line is not visible here.
         } catch (FileNotFoundException fnfe) {
             fnfe.printStackTrace();
-            System.out.println("!!! Error file: " + filename + " not found !!!"); //TODO LOGGER.error
+            System.err.println("!!! Error file: " + filename + " not found !!!"); //TODO LOGGER.error
         } catch (IOException ioe) {
             ioe.printStackTrace();
-            System.out.println("!!! Error opening and/or using the file: " + filename + " !!!"); //TODO LOGGER.error
+            System.err.println("!!! Error opening and/or using the file: " + filename + " !!!"); //TODO LOGGER.error
         }
 
         return lsLines;
