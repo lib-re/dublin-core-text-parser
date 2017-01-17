@@ -1,6 +1,8 @@
 package dc_metadata;
 
-public class Date extends Element{
+import java.util.Date;
+
+public class DCDate extends Element{
 
     private static String CREATED       = "created";
     private static String VALID         = "valid";
@@ -15,26 +17,34 @@ public class Date extends Element{
     private static String DEFENSE       = "defense";
     private static String DIGITIZED     = "digitized";
 
+    // todo: update value into java.util.Date object.
+    // unique values
+    // private Date value;
 
-    private Date(){
+    private DCDate(){
         uri="http://purl.org/dc/elements/1.1/date";
         name="date";
-        label="Date";
+        label="DCDate";
         encoding="W3C-DTF";
         definition="A point or period of time associated with an event in the lifecycle of the resource.";
     }
 
-    public static Date createDate(String qualifierText, String value){
-        Date a = new Date();
-        a.value = value;
+    public static DCDate createDate(String qualifierText, String value){
+
+        DCDate a = new DCDate();
+
+        // todo: implement smart Date creation based on encoding
+        // if(encoding == null)
+        //    encoding = "yyyy-mm-dd";
+        // a.encoding = encoding;
+
+        a.value = /*new Date(*/ value;
         a.qualifier = determineQualifier(qualifierText);
 
         return a;
     }
 
     private static String determineQualifier(String str){
-
-        str=str.toLowerCase().replace("_","");
 
         if      (str.contains("create"))    {   return CREATED;     }
         else if (str.contains("valid"))     {   return VALID;       }

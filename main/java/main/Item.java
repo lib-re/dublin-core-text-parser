@@ -4,10 +4,8 @@ import dc_metadata.*;
 import org.pmw.tinylog.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.Collection;
 
 
 /**
@@ -25,7 +23,8 @@ public class Item {
     public List<String> lsFilenames;
 
     //list of all the data Elements
-    private List<Element> lsElements;
+    protected Map<String, List<Element>> dctElements;
+    //private List<Element> lsElements;
 
     //list of all the warnings
     private List<String> lsWarnings;
@@ -35,9 +34,11 @@ public class Item {
      */
     public Item(int i){
         this.id = i;
-        this.lsElements = new ArrayList<Element>();
-        this.lsFilenames = new ArrayList<String>();
-        this.lsWarnings = new ArrayList<String>();
+        //this.lsElements     = new ArrayList<Element>();
+        this.lsFilenames    = new ArrayList<String>();
+        this.lsWarnings     = new ArrayList<String>();
+
+        this.dctElements    = new HashMap<String, List<Element>>();
     }
 
     // - print/export functions - //
@@ -45,6 +46,8 @@ public class Item {
     /**
      * Return string of printout listing Item ID, Filename, followed by a printout
      *   of all elements:
+     *
+     *   todo: remove and place into TXTExporter
      *
      *   ```
      *   ---- Item ##: filename.pdf ----
@@ -57,33 +60,38 @@ public class Item {
      */
     @Override
     public final String toString(){
-        String header = "---- Item " + id + ": ";
 
-            //list filenames
-            int i = 0;
-            for(String s: this.lsFilenames) {
-                if (lsFilenames.size() > 1 && i >= 1) { header += ", "; }
-                header += s; i++;
-            }
-        header+= " ----";
-
-        String toReturn = header;
+        String toReturn = "";
         toReturn += "\n";
 
         //sort the items for printing according to setting [ alphabetically by E.name->E.qualifier->E.value ]
-        if(SETTING_TOSORT)
-            Collections.sort(lsElements);
+        //if(SETTING_TOSORT)
+        //    Collections.sort(dctElementsElements);
 
-        for (Element e: lsElements){
-            toReturn += "-> " + e.toString() + "\n";
-        }
+        for (Collection<Element> colElem: this.dctElements.values())
+            for(Element e : colElem)
+
 
         toReturn += "\n";
+
+        toReturn += "----------\n " + this.dctElements.toString();
 
         return toReturn;
     }
 
     // - add elements to the item - //
+
+    private void addElement(Element e){
+
+        String key = e.getQualifiedName();
+
+        List<Element> lsValues = this.dctElements.get(key);
+        if(lsValues == null)
+            lsValues = new ArrayList<Element>();
+
+        lsValues.add(e);
+        this.dctElements.put(key, lsValues);
+    }
 
     /* - determine element type by option - */
     public boolean addElementType(String optionText, String line){
@@ -103,14 +111,14 @@ public class Item {
 
         //add once or using different split character
         if(e.startsWith(Parser.DATE)) {
-            this.lsElements.add(Date.createDate(q, line));
+            this.addElement(DCDate.createDate(q, line));
         }else if(e.startsWith(Parser.TITLE)){
             for (String value : line.split("\\|",-1)) {
-                this.lsElements.add(Title.createTitle(q, value.trim()));
+                this.addElement(Title.createTitle(q, value.trim()));
             }
         } else if (e.startsWith(Parser.PUBLISHER)) {
             for (String value : line.split("\\|",-1)) {
-                this.lsElements.add(Publisher.createPublisher(q, value.trim()));
+                this.addElement(Publisher.createPublisher(q, value.trim()));
             }
         }
 
@@ -121,29 +129,29 @@ public class Item {
             if (e.startsWith(Parser.FILENAME)) {
                 addFilename(s);
             } else if (e.startsWith(Parser.AUDIENCE)) {
-                this.lsElements.add(Audience.createAudience(q, s));
+                this.addElement(Audience.createAudience(q, s));
             } else if (e.startsWith(Parser.COVERAGE)) {
-                this.lsElements.add(Coverage.createCoverage(q, s));
+                this.addElement(Coverage.createCoverage(q, s));
             } else if (e.startsWith(Parser.DESCRIPTION)) {
-                this.lsElements.add(Description.createDescription(q, s));
+                this.addElement(Description.createDescription(q, s));
             } else if (e.startsWith(Parser.FORMAT)) {
-                this.lsElements.add(Format.createFormat(q, s));
+                this.addElement(Format.createFormat(q, s));
             } else if (e.startsWith(Parser.IDENTIFIER)) {
-                this.lsElements.add(Identifier.createIdentifier(q, s));
+                this.addElement(Identifier.createIdentifier(q, s));
             } else if (e.startsWith(Parser.LANGUAGE)) {
-                this.lsElements.add(Language.createLanguage(q, s));
+                this.addElement(Language.createLanguage(q, s));
             } else if (e.startsWith(Parser.NOTE)) {
-                this.lsElements.add(Description.createDescription("note", s));
+                this.addElement(Description.createDescription("note", s));
             } else if (e.startsWith(Parser.RELATION)) {
-                this.lsElements.add(Relation.createRelation(q, s));
+                this.addElement(Relation.createRelation(q, s));
             } else if (e.startsWith(Parser.RIGHTS)) {
-                this.lsElements.add(Rights.createRights(q, s));
+                this.addElement(Rights.createRights(q, s));
             } else if (e.startsWith(Parser.RIGHTSHOLDER)) {
                 throw new NotImplementedException();
             } else if (e.startsWith(Parser.SUBJECT)) {
-                this.lsElements.add(Subject.createSubject(q, s)); //TODO remove in place of body?
+                this.addElement(Subject.createSubject(q, s)); //TODO remove in place of body?
             } else if (e.startsWith(Parser.TYPE)) {
-                this.lsElements.add(new Type(s));
+                this.addElement(new Type(s));
             }
         }
 
@@ -175,25 +183,32 @@ public class Item {
         this.lsFilenames.add(line.trim());
     }
 
-    /** add an article to the item*/
     public void addArticle(String articleTitle){
-        lsElements.add( Description.createDescription("table_of_contents", articleTitle));
+        this.addElement( Description.createDescription("table_of_contents", articleTitle));
     }
 
-    /** add a contributor - */
     public void addContributor(String qualifier, String value) {
-        lsElements.add(Contributor.createContributor(qualifier, value));
+        this.addElement(Contributor.createContributor(qualifier, value));
     }
 
     /** add a note : DESCRIPTION_NOTE -> dc.description.note */
     public void addNote(String line){
-        lsElements.add(Description.createDescription("_NOTE",line));
+        this.addElement(Description.createDescription("_NOTE",line));
     }
 
-    /** add a subject */
     public void addSubject(String qualifier, String line){
-        lsElements.add(Subject.createSubject(qualifier, line));
+        this.addElement(Subject.createSubject(qualifier, line));
     }
 
+
+    // - helpers - //
+
+    public Set<String> getUniqueKeys(){
+        return this.dctElements.keySet();
+    }
+
+    public List<Element> getElementsOfType(String key){
+        return this.dctElements.get(key);
+    }
 
 }

@@ -14,42 +14,34 @@ public abstract class Element implements Comparable{
 
     //data elements relating to particular entry
     protected String qualifier = "";
-    protected String value = "";
+    protected Object value = "";
 
     /** print out 'dc.{element_name}[.{qualifier_name}]: {value}' */
     @Override
     public final String toString(){
-        String toReturn = "dc." + name;
-        toReturn += (qualifier.isEmpty())? "" : "." + qualifier;
-        return toReturn + ": " + value;
+        return this.getQualifiedName() + ": " + this.getValue();
     }
-
-    /** print out helper text explaining the element (no qualifier) */
-    public final String helpText(){
-        return label + " | " + "dc." + name + " | " + definition;
-    }
-
-    /**
-     * returns a line of xml that describes that element/qualifier/value pair
-     */
-    public String XMLExport(){
-        String toReturn = "<dcvalue element=\"" + name + "\"";
-        toReturn += (qualifier.isEmpty())? "" : "qualifier=\"" + qualifier + "\"";
-        toReturn += (encoding.isEmpty()? "" : " scheme=\"dcterms:"+encoding+"\" "); //TODO check
-
-        return toReturn + ">" + value + "</dcvalue>";
-    }
-
 
     // - getters and setters - //
 
-    /* - qualifier - */
     public String getQualifier() { return this.qualifier; }
+
+    public String getQualifiedName() {
+        String toReturn = "dc." + name;
+        toReturn += (qualifier.isEmpty())? "" : "." + qualifier;
+        return toReturn;
+    }
 
     public String getName(){ return this.name; }
 
-    public String getValue(){ return this.value; }
+    public String getValue(){ return this.value.toString(); }
 
+
+    // - helpers - //
+
+    /** compareTo function for use in sorting.
+     *    [sort order: E.name -> E.qualifier -> E.value]
+     */
     public int compareTo(Object o) {
 
         String x1 = ((Element) o).getName();
@@ -65,7 +57,7 @@ public abstract class Element implements Comparable{
                 return sComp;
             }else{
                 String x3 = ((Element) o).getValue();
-                return (value).compareTo(x3);
+                return (this.getValue()).compareTo(x3);
             }
         }
     }

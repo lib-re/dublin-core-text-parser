@@ -44,7 +44,6 @@ public class Parser {
 
     //critical elements
     private ArrayList<String> lsHeaderOptions;
-    private ArrayList<String[]> lsShared;
     private Collection collection;
     private String current_qualifier;
 
@@ -59,9 +58,6 @@ public class Parser {
 
         //initialize header
         initHeader();
-
-        //initialize list of shared values
-        lsShared = new ArrayList<String[]>();
 
         //initialize collection
         collection = new Collection();
@@ -99,14 +95,14 @@ public class Parser {
         for(String[] line : shared){ //for each line in the shared file
             lsSharedOptions.add(line[0]); //option
             String[] toAdd = {line[0], line[1]};
-            this.lsShared.add(toAdd);
+            this.collection.lsShared.add(toAdd);
 
             Logger.trace("Added shared value '{}:{}'",line[0],line[1]);
         }
 
         //validate the set of shared values. if not validated, clear
         if(!isValidOptions(lsSharedOptions)){
-            this.lsShared.clear();
+            this.collection.lsShared.clear();
             Logger.warn("Collection-level warning: 'shared.csv' file is not accurately formatted or is empty");
             return false;
         }
@@ -193,7 +189,7 @@ public class Parser {
         }//(end for loop through line of file)
 
         //add the shared element values to the item.
-        for(String[] s2D : this.lsShared){
+        for(String[] s2D : this.collection.lsShared){
             current_item.addElementType(s2D[0],s2D[1]);
         }
 

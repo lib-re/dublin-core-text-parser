@@ -135,6 +135,8 @@ public class Main {
 
             for(String filename : lsFiles) {
                 String path = DIRECTORY_PATH_IN + filename;
+
+                //todo: harvest metadata from file and use it to populate provenance information
                 p.processMetadataFile(processFileIntoStringArray(DIRECTORY_PATH_IN + filename), id);
                 id++;
             }
@@ -148,7 +150,7 @@ public class Main {
         // get desired format/s from command line
         boolean exp_csv = commandLine.hasOption('C');
         boolean exp_XML = commandLine.hasOption('X');   boolean exp_xml = commandLine.hasOption('x');
-        //boolean exp_MRK = commandLine.hasOption('M');   boolean exp_mrk = commandLine.hasOption('m');
+        boolean exp_MRK = commandLine.hasOption('M');   boolean exp_mrk = commandLine.hasOption('m');
         boolean exp_JSN = commandLine.hasOption('J');   boolean exp_jsn = commandLine.hasOption('j');
 
         //
