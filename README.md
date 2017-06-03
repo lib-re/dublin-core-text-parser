@@ -1,4 +1,4 @@
-###Purpose###
+### Purpose
 
 _Short_:
 Convert dublin core metadata stored in text files to other machine-readable
@@ -10,7 +10,7 @@ Assist in cataloguing batches of similar or series-based items from a collection
 * minimizing repetitive typing and template editing
 * combining the information that is shared across items in a collection in one place
 
-###Usage Instructions###
+### Usage Instructions
 
 1. _Create Text File/s_: 
 Create a text file of the basic metadata for each item in the collection.
@@ -30,7 +30,7 @@ After completion of the above tasks, the text files can be discarded as
   irrelevant, or used as a quick reference to the metadata info along-
   side where you're storing the files themselves.
   
-###Output Types###
+### Output Types
 
 | Flag | .ext | Description |
 |:-------|:--------:|:-----------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ After completion of the above tasks, the text files can be discarded as
 |~~M~~|~~.mrk~~|MARC format which will likely need to be compiled into .mrc|
 |...|...| Feel free to fork and create more output types or suggest different uses.|
 
-###External Links###
+### External Links
 
 * [Wiki for this program!](https://github.com/atla5/dublin-core-text-parser/wiki)
 * [Dublin Core documentation](http://dublincore.org/documents/dces/)
