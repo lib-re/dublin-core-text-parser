@@ -12,13 +12,13 @@ Assist in cataloguing batches of similar or series-based items from a collection
 
 ### Usage Instructions
 
-1. _Create Text File/s_: 
-Create a text file of the basic metadata for each item in the collection.
+1. _Edit Config File_: 
+If desired, edit the configuration file to customize the format of the header
 2. _Edit Shared File_:
 Edit the settings to include any and all shared metadata applicable to all
   of the items in the given batch (e.g language, publisher, etc.)
-3. _Edit Config File_: 
-If desired, edit the configuration file to customize the format of the header
+3. _Create Text File/s_: 
+Create a text file of the basic metadata for each item in the collection.
 4. _Run Script_:
 Run the script to create, in that directory, the desired output/s encoded with
   the dublin-core metadata you logged in the text files. 
