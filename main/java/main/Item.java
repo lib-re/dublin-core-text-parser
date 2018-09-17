@@ -162,7 +162,7 @@ public class Item {
             added = false;
 
             //
-            String warnText = String.format("'{}:{}' not added to item {}.",optionText,line,this.id);
+            String warnText = String.format("'%s:%s' not added to item %s.",optionText,line,this.id);
             this.lsWarnings.add(warnText);
 
             LOGGER.warning(optionText + " not recognized by option parser!");

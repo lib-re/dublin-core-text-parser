@@ -100,7 +100,7 @@ public class Parser {
             String[] toAdd = {line[0], line[1]};
             this.collection.lsShared.add(toAdd);
 
-            LOGGER.info(String.format("Added shared value '{}:{}'", line[0],line[1]));
+            LOGGER.info(String.format("Added shared value '%s:%s'", line[0],line[1]));
         }
 
         //validate the set of shared values. if not validated, clear
@@ -167,7 +167,7 @@ public class Parser {
                 //if we read an all caps field, switch contributor type
                 if (isAllCaps(line)) {
 
-                    LOGGER.info(String.format("Contributor type switched from '{}' to '{}'", this.current_qualifier, line));
+                    LOGGER.info(String.format("Contributor type switched from '%s' to '%s'", this.current_qualifier, line));
                     this.current_qualifier = line;
 
 

@@ -1,0 +1,158 @@
+Sep 16, 2018 9:31:45 PM main.Parser setShared
+INFO: Added shared value 'PUBLISHER:Walker Books | Little, Brown, and Company | Candlewick Press'
+Sep 16, 2018 9:31:45 PM main.Parser setShared
+INFO: Added shared value 'TYPE:Magazine'
+Sep 16, 2018 9:31:45 PM main.Parser setShared
+INFO: Added shared value 'DESCRIPTION:Part of a series devoted to in depth vignette on famous persons'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Mode switched from NULL to ARTICLES.
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Mode switched from ARTICLES to CONTRIBUTORS.
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'null' to 'AUTHOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Waldo
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'AUTHOR' to 'ILLUSTRATOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Martin Handford
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'ILLUSTRATOR' to 'THANKS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: *The hearts and minds of america's youth (non-name)
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Mode switched from CONTRIBUTORS to SUBJECT.
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: subject qualifier set to 'KEYWORDS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: youth
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: picture books
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: autobiography
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: famous people
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Mode switched from SUBJECT to ARTICLES.
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Mode switched from ARTICLES to CONTRIBUTORS.
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'KEYWORDS' to 'EDITOR IN CHIEF'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Editor InChief
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'EDITOR IN CHIEF' to 'MANAGING EDITOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Manage N.G. Editor
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'MANAGING EDITOR' to 'EXECUTIVE EDITOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Exec U. Tiv
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'EXECUTIVE EDITOR' to 'WRITERS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Ernest Hemingway
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Charles Dickens
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Stephen King
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Jane Austin
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Ed Poe
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Mark Twain
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: James Joyce
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'WRITERS' to 'NEWS EDITOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Edward R. Murrow
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'NEWS EDITOR' to 'NEWS WRITERS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: James Agee
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Christiane Amanpour
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: James Baldwin
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'NEWS WRITERS' to 'ENTERTAINMENT EDITOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Alan Coren
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'ENTERTAINMENT EDITOR' to 'ENTERTAINMENT WRITERS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Russel Baker
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'ENTERTAINMENT WRITERS' to 'SPORTS EDITOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: John Anderson
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'SPORTS EDITOR' to 'SPORTS WRITERS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Matt Barrie
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Chris Berman
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Max Bretos
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Nicole Briscoe
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'SPORTS WRITERS' to 'ILLUSTRATOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Herbert Block
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'ILLUSTRATOR' to 'ART DIRECTOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Leonardo DaVinci
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'ART DIRECTOR' to 'PRODUCTION MANAGERS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Pro Duct Manager
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'PRODUCTION MANAGERS' to 'PRODUCTION STAFF'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: John Doe
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'PRODUCTION STAFF' to 'PHOTO EDITOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Jane Doe
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'PHOTO EDITOR' to 'CHIEF PHOTOGRAPHER'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Robert Capa
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'CHIEF PHOTOGRAPHER' to 'PHOTOGRAPHERS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Ansel Adams
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Henri Cartier-Bresson
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Dorothea Lange
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'PHOTOGRAPHERS' to 'ADVERTISING MANAGER'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Don Draper
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'ADVERTISING MANAGER' to 'BUSINESS MANAGER'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Andrew Carnegie
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Contributor type switched from 'BUSINESS MANAGER' to 'ADVISOR'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Added new contributor: Benjamin Franklin
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: Mode switched from CONTRIBUTORS to SUBJECT.
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: subject qualifier set to 'KEYWORDS'
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: famous people
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: historical
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: articles
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: examples
+Sep 16, 2018 9:31:45 PM main.Parser processMetadataFile
+INFO: dc.subject.KEYWORDS added: parsers
