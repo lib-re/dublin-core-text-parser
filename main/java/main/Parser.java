@@ -48,7 +48,7 @@ public class Parser {
 
 
     // configure logger
-    private static Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private static Logger LOGGER = Logger.getLogger(Parser.class.getName());
 
 
 
