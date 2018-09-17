@@ -1,10 +1,9 @@
 package main;
 
-import org.pmw.tinylog.Logger;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Parser object which interprets a given text file and creates an interpreted 'Item' object
@@ -46,6 +45,10 @@ public class Parser {
     private ArrayList<String> lsHeaderOptions;
     private Collection collection;
     private String current_qualifier;
+
+
+    // configure logger
+    private static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 
 
@@ -97,13 +100,13 @@ public class Parser {
             String[] toAdd = {line[0], line[1]};
             this.collection.lsShared.add(toAdd);
 
-            Logger.trace("Added shared value '{}:{}'",line[0],line[1]);
+            LOGGER.info(String.format("Added shared value '{}:{}'", line[0],line[1]));
         }
 
         //validate the set of shared values. if not validated, clear
         if(!isValidOptions(lsSharedOptions)){
             this.collection.lsShared.clear();
-            Logger.warn("Collection-level warning: 'shared.csv' file is not accurately formatted or is empty");
+            LOGGER.warning("Collection-level warning: 'shared.csv' file is not accurately formatted or is empty");
             return false;
         }
 
@@ -144,9 +147,9 @@ public class Parser {
 
                 //check mode is valid, then log modeswitch
                 if(m.equals(mode.NULL)) {
-                    Logger.error("{} cannot be processed into an appropriate element.", line);
+                    LOGGER.severe("'" +line + "' cannot be processed into an appropriate element.");
                 }else {
-                    Logger.trace("Mode switched from {} to {}.", this.current_mode, m);
+                    LOGGER.info(String.format("Mode switched from %s to %s.", this.current_mode, m));
                     this.current_mode = m;
                 }
             }
@@ -164,14 +167,14 @@ public class Parser {
                 //if we read an all caps field, switch contributor type
                 if (isAllCaps(line)) {
 
-                    Logger.trace("Contributor type switched from '{}' to '{}'", this.current_qualifier, line);
+                    LOGGER.info(String.format("Contributor type switched from '{}' to '{}'", this.current_qualifier, line));
                     this.current_qualifier = line;
 
 
                 //add appropriate contributor qualifier type
                 } else {
                     current_item.addContributor(this.current_qualifier, line);
-                    Logger.trace("Added new contributor: {}", line);
+                    LOGGER.info("Added new contributor: " + line);
                 }
 
             }else if (current_mode == mode.SUBJECT) {
@@ -179,10 +182,10 @@ public class Parser {
                 //update the encoding for the subject
                 if (isAllCaps(line)){
                     this.current_qualifier = line;
-                    Logger.trace("subject qualifier set to '{}'.",line);
+                    LOGGER.info("subject qualifier set to '"+ line + "'");
                 }else{
                     current_item.addSubject(this.current_qualifier, line);
-                    Logger.trace("dc.subject.{} added: {}",current_qualifier, line);
+                    LOGGER.info(String.format("dc.subject.%s added: %s", current_qualifier, line));
                 }
 
             }
@@ -233,7 +236,7 @@ public class Parser {
         for(String o : lsOptions) {
             if(o.isEmpty()){ continue; }
             else if (!lsAllOptions.contains(o)) {
-                Logger.warn("Option '{}' invalid", o);
+                LOGGER.warning(String.format("Option '%s' invalid", o));
                 return false;
             }
         }

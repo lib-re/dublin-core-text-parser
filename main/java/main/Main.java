@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.cli.*;
-import org.pmw.tinylog.Logger;
+import java.util.logging.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -21,6 +21,9 @@ public class Main {
     public static String DIRECTORY_PATH_OUT   = "../output/";        //TODO allow custom path
     public String DIRECTORY_PATH_LOG   = "./main/logs/";
     private String EXPORT_FILENAME     = "export"; //name of each exported file in 'output/' (collection name)
+
+    // configure logger
+    private static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 
     // - public facing back end
@@ -105,7 +108,7 @@ public class Main {
             List<String> lsOptions = processFileIntoStringArray(commandLine.getOptionValue('c').trim());
 
             if( !p.setHeaderOptions(lsOptions) ){
-                Logger.error("Invalid configuration file! Please check spelling and documentation.");
+                LOGGER.severe("Invalid configuration file! Please check spelling and documentation.");
                 System.exit(1);
             }
         }
