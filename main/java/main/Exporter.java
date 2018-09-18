@@ -72,13 +72,10 @@ public abstract class Exporter {
                 List<Element> lsElements = item.getElementsOfType(elementType);
 
                 // handle case where no elements
-                if(lsElements == null || lsElements.size() == 0) {
-                    ps.print("");
-                }else {
-
+                if(lsElements != null && lsElements.size() != 0) {
                     int size = lsElements.size();
                     if(size == 1) {
-                        ps.print("\"" + processElement(lsElements.get(0), true));
+                        ps.print(processElement(lsElements.get(0), true));
                         continue;
                     }
 

@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.cli.*;
-import org.pmw.tinylog.Logger;
+
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -19,8 +23,10 @@ public class Main {
     public static String DIRECTORY_PATH_IN  = "./main/sample_data/"; //TODO allow custom path
     public static String DIRECTORY_PATH_CONF  = "./main/config/";    //TODO allow custom path
     public static String DIRECTORY_PATH_OUT   = "../output/";        //TODO allow custom path
-    public String DIRECTORY_PATH_LOG   = "./main/logs/";
     private String EXPORT_FILENAME     = "export"; //name of each exported file in 'output/' (collection name)
+
+    // configure logger
+    private static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 
     // - public facing back end
@@ -71,9 +77,16 @@ public class Main {
         try{
             commandLine = posixParser.parse(options, args);
         }catch(org.apache.commons.cli.ParseException e){
-            System.err.println(e);
-            System.err.println("\n --FATAL ERROR PARSING COMMAND LINE INPUT-- \n");
+            LOGGER.severe(e.getMessage());
+            LOGGER.severe("\n --FATAL ERROR PARSING COMMAND LINE INPUT-- \n");
         }
+
+        // -- tell logger to log to file -- //
+        FileHandler fh = new FileHandler("main/output/log.txt");
+        LOGGER.addHandler(fh);
+        SimpleFormatter formatter = new SimpleFormatter();
+        fh.setFormatter(formatter);
+        LOGGER.setUseParentHandlers(false);
 
 
         // -- process this input -- //
@@ -105,7 +118,7 @@ public class Main {
             List<String> lsOptions = processFileIntoStringArray(commandLine.getOptionValue('c').trim());
 
             if( !p.setHeaderOptions(lsOptions) ){
-                Logger.error("Invalid configuration file! Please check spelling and documentation.");
+                LOGGER.severe("Invalid configuration file! Please check spelling and documentation.");
                 System.exit(1);
             }
         }
@@ -196,10 +209,10 @@ public class Main {
             // line is not visible here.
         } catch (FileNotFoundException fnfe) {
             fnfe.printStackTrace();
-            System.err.println("!!! Error file: " + filename + " not found !!!"); //TODO LOGGER.error
+            LOGGER.severe("!!! Error file: " + filename + " not found !!!");
         } catch (IOException ioe) {
             ioe.printStackTrace();
-            System.err.println("!!! Error opening and/or using the file: " + filename + " !!!"); //TODO LOGGER.error
+            LOGGER.severe("!!! Error opening and/or using the file: " + filename + " !!!");
         }
 
         return lsLines;

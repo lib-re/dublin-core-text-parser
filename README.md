@@ -10,7 +10,9 @@ Assist in cataloguing batches of similar or series-based items from a collection
 * minimizing repetitive typing and template editing
 * combining the information that is shared across items in a collection in one place
 
-### Usage Instructions
+## Usage
+
+### Process Instructions
 
 1. _Edit Config File_: 
 If desired, edit the configuration file to customize the format of the header
@@ -39,6 +41,32 @@ After completion of the above tasks, the text files can be discarded as
 |~~J,j~~|~~.json~~|[One or many] is commonly used by REST APIs|
 |~~M~~|~~.mrk~~|MARC format which will likely need to be compiled into .mrc|
 |...|...| Feel free to fork and create more output types or suggest different uses.|
+
+### Raw Help Output
+
+Use `-h` at any time to get (something like) the following:
+
+```
+usage: dublin-core-text-parser
+
+A cataloguing tool for converting specially formatted text files
+containing dublin core metadata into various formats
+
+ -c,--config <arg>   Reference to a file containing alternative header
+                     arrangements
+ -C,--csv            Create a single .csv  file containing metadata of
+                     each item
+ -h,--help           Display the help information
+ -J,--json           Create a single .json file containing metadata of
+                     each item
+ -M,--mrk            Create a single .mrk  file containing metadata of
+                     each item
+ -o,--output <arg>   Name the output file
+ -s,--shared <arg>   file location of the shared.csv file containing the
+                     shared fields
+ -X,--xml            Create a single .xml  file containing metadata of
+                     each item
+```
 
 ### External Links
 

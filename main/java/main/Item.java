@@ -1,7 +1,7 @@
 package main;
 
 import dc_metadata.*;
-import org.pmw.tinylog.Logger;
+import java.util.logging.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
@@ -28,6 +28,9 @@ public class Item {
 
     //list of all the warnings
     private List<String> lsWarnings;
+
+    //configure logger
+    Logger LOGGER = Logger.getLogger(Item.class.getName());
 
     /**
      * Create an item of a given ID and no elements.
@@ -159,11 +162,11 @@ public class Item {
             added = false;
 
             //
-            String warnText = String.format("'{}:{}' not added to item {}.",optionText,line,this.id);
+            String warnText = String.format("'%s:%s' not added to item %s.",optionText,line,this.id);
             this.lsWarnings.add(warnText);
 
-            Logger.warn("{} not recognized by option parser!", optionText);
-            Logger.warn(warnText);
+            LOGGER.warning(optionText + " not recognized by option parser!");
+            LOGGER.warning(warnText);
         }
 
         //return whether or not it was added

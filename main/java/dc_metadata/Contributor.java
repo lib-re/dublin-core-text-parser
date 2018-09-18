@@ -1,8 +1,6 @@
 package dc_metadata;
 
-import org.pmw.tinylog.Logger;
-
-import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Representation for a Contributor element.
@@ -11,6 +9,8 @@ public class Contributor extends Element {
 
     //static parsing characters
     public static final String DELIM_NONNAME = "*";
+
+    private static Logger LOGGER = Logger.getLogger(Contributor.class.getName());
 
     // - dc.contributor.* || contributor role codes - //
     public static String ACTOR             = "actor";
@@ -73,7 +73,7 @@ public class Contributor extends Element {
         String qualifier = determineContributorQualifier(qualifierText);
         String value = determineName(fullName).trim();
 
-        Logger.trace("CONTRIBUTOR created | qualifier: {}, value: {}.", qualifier, value);
+        LOGGER.info(String.format("CONTRIBUTOR created | qualifier: %s, value: %s.", qualifier, value));
 
         return new Contributor(qualifier, value);
     }
