@@ -11,30 +11,24 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * main.Main user-facing class. Directs all actions.
  */
 public class Main {
 
     //delimiters
-    public static String DELIM_SHARED = "|";
     public static String DIRECTORY_PATH_IN  = "./main/sample_data/"; //TODO allow custom path
     public static String DIRECTORY_PATH_CONF  = "./main/config/";    //TODO allow custom path
     public static String DIRECTORY_PATH_OUT   = "../output/";        //TODO allow custom path
-    private String EXPORT_FILENAME     = "export"; //name of each exported file in 'output/' (collection name)
+    private String EXPORT_FILENAME = "export"; //name of each exported file in 'output/' (collection name)
 
     // configure logger
     private static Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 
-    // - public facing back end
-
     /**
      * Main function responsible for taking in user input at the command line,
      *   handling flags, and directing overall behavior of the program.
-     * @param args list of files (?)
      * @throws IOException
      * @throws ParseException
      */
@@ -43,7 +37,7 @@ public class Main {
         // - get input from the user command line - //
         String header = "A cataloguing tool for converting specially formatted text files containing dublin " +
                 "core metadata into various formats\n";
-        String footer = "";
+        String footer = "-- developed by @atla5 on behalf of RIT Wallace and BU Mugar libraries.";
         CommandLineParser posixParser = new PosixParser();
         Options options = new Options();
 
@@ -101,13 +95,6 @@ public class Main {
             System.exit(0);
         }
 
-        //display help information for dublin core
-        if(commandLine.hasOption('d')) {
-            throw new NotImplementedException();
-            //System.exit(0);
-        }
-
-
         /* - run the program in the absence of these tags */
 
         //instantiate a new parser
@@ -141,16 +128,14 @@ public class Main {
 
         int id = 1;
         //foreach file in the directory...
+        File folder = new File(DIRECTORY_PATH_IN);
+        File[] lsFiles = folder.listFiles();
 
-            String waldo = "sample-metadata-file.txt";
-            String sample= "1990-v123n04.txt";
-            String[] lsFiles = { waldo, sample };
-
-            for(String filename : lsFiles) {
-                String path = DIRECTORY_PATH_IN + filename;
+            for(File filename : lsFiles) {
+                String path =  filename.getAbsolutePath();
 
                 //todo: harvest metadata from file and use it to populate provenance information
-                p.processMetadataFile(processFileIntoStringArray(DIRECTORY_PATH_IN + filename), id);
+                p.processMetadataFile(processFileIntoStringArray(path), id);
                 id++;
             }
         //end foreach file in directory...

@@ -73,7 +73,7 @@ public class Contributor extends Element {
         String qualifier = determineContributorQualifier(qualifierText);
         String value = determineName(fullName).trim();
 
-        LOGGER.info(String.format("CONTRIBUTOR created | qualifier: %s, value: %s.", qualifier, value));
+        //LOGGER.info(String.format("CONTRIBUTOR created | qualifier: %s, value: %s.", qualifier, value));
 
         return new Contributor(qualifier, value);
     }

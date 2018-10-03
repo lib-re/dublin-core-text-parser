@@ -1,5 +1,6 @@
 package export;
 
+import com.sun.deploy.util.StringUtils;
 import dc_metadata.Element;
 import main.Item;
 
@@ -10,15 +11,7 @@ public class TXTExporter extends main.Exporter {
 
     @Override
     protected String processItemHeader(Item item){
-        String toReturn = "---- Item " + item.id + ": ";
-
-        //list filenames
-        int i = 0;
-        for(i = 0; i < item.lsFilenames.size()-1; i++){
-            toReturn += item.lsFilenames.get(i) + ", ";
-        } toReturn += item.lsFilenames.get(i);
-
-        return toReturn + " ----\n";
+        return String.format("---- Item %d: %s ----", item.id, StringUtils.join(item.lsFilenames, ", "));
     }
 
     @Override

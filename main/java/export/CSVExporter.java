@@ -1,11 +1,10 @@
 package export;
 
+import com.sun.deploy.util.StringUtils;
 import dc_metadata.Element;
 import main.Item;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Export to CSV file for use with `DSpace/SAFBuildier`
@@ -23,27 +22,13 @@ public class CSVExporter extends main.Exporter{
 
     @Override
     protected String processHeader(){
-
-        ArrayList<String> lsElements = new ArrayList<String>();
-        lsElements.addAll(this.lsUniqueElementNames);
-
-        String toReturn = ""; int i;
-        for (i = 0; i < lsElements.size() - 1; i++)
-            toReturn += lsElements.get(i) + ",";
-
-        return toReturn + lsElements.get(i) + "\n";
+        return StringUtils.join(this.lsUniqueElementNames,",") + "\n";
     }
 
     @Override
     protected String processItemHeader(Item item){
-        String toReturn = "\"" + item.id + "\",";
-
-        List<String> filenames = item.lsFilenames; int i;
-        toReturn += "\"";
-        for(i = 0; i < filenames.size()-1; i++)
-            toReturn += filenames.get(i) + "||";
-
-        return toReturn + filenames.get(i) + "\",";
+        String filenames = StringUtils.join(item.lsFilenames, "||");
+        return String.format("%d,\"%s\",", item.id, filenames);
 
     }
 
