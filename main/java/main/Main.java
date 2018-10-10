@@ -17,6 +17,7 @@ import java.util.logging.SimpleFormatter;
 public class Main {
 
     //delimiters
+    private static boolean USE_SPECIFIED_DIRECTORY = false;
     public static String DIRECTORY_PATH_IN  = "./main/sample_data/"; //TODO allow custom path
     public static String DIRECTORY_PATH_CONF  = "./main/config/";    //TODO allow custom path
     public static String DIRECTORY_PATH_OUT   = "../output/";        //TODO allow custom path
@@ -57,9 +58,8 @@ public class Main {
 
         /* one file for entire collection */
         options.addOption("C", "csv",  false, "Create a single .csv  file containing metadata of each item");
-        options.addOption("M", "mrk",  false, "Create a single .mrk  file containing metadata of each item");
-        options.addOption("J", "json", false, "Create a single .json file containing metadata of each item");
-        options.addOption("X", "xml",  false, "Create a single .xml  file containing metadata of each item");
+        //options.addOption("J", "json", false, "Create a single .json file containing metadata of each item");
+        //options.addOption("X", "xml",  false, "Create a single .xml  file containing metadata of each item");
 
         /* one file for each item */
         //options.addOption("j", "json-each", false, "Create a separate json object for each .txt file");
@@ -100,9 +100,17 @@ public class Main {
         //instantiate a new parser
         Parser p = new Parser();
 
+        //look in the data directory for files
+        String folderPath = /*commandLine.hasOption()*/ USE_SPECIFIED_DIRECTORY? DIRECTORY_PATH_IN : System.getProperty("user.dir");
+        File[] lsFiles = new File(folderPath).listFiles();
+
+        //
+        String specifiedConfigFile = commandLine.hasOption('c')? commandLine.getOptionValue('c').trim() : "folderPath"+"/config.txt";
+        if()
+
         //alter header with given the contents of config file
-        if (commandLine.hasOption('c')) {
-            List<String> lsOptions = processFileIntoStringArray(commandLine.getOptionValue('c').trim());
+        if () {
+            List<String> lsOptions = processFileIntoStringArray(specifiedConfigFile);
 
             if( !p.setHeaderOptions(lsOptions) ){
                 LOGGER.severe("Invalid configuration file! Please check spelling and documentation.");
@@ -112,8 +120,8 @@ public class Main {
 
         //set the shared
         if (true){ //commandLine.hasOption('s')) {
-            List<String> lsSharedLines = processFileIntoStringArray(DIRECTORY_PATH_CONF + "shared.csv");
             //commandLine.getOptionValue('s').trim()); TODO set option to specify other file
+            List<String> lsSharedLines = processFileIntoStringArray(DIRECTORY_PATH_CONF + "shared.csv");
 
             ArrayList<String[]> lsShared2D = new ArrayList<String[]>();
             for(String line : lsSharedLines ) {
@@ -129,10 +137,10 @@ public class Main {
         int id = 1;
         //foreach file in the directory...
         File folder = new File(DIRECTORY_PATH_IN);
-        File[] lsFiles = folder.listFiles();
 
             for(File filename : lsFiles) {
                 String path =  filename.getAbsolutePath();
+                if(path.isEmpty()){ continue; }
 
                 //todo: harvest metadata from file and use it to populate provenance information
                 p.processMetadataFile(processFileIntoStringArray(path), id);
@@ -148,7 +156,6 @@ public class Main {
         // get desired format/s from command line
         boolean exp_csv = commandLine.hasOption('C');
         boolean exp_XML = commandLine.hasOption('X');   boolean exp_xml = commandLine.hasOption('x');
-        boolean exp_MRK = commandLine.hasOption('M');   boolean exp_mrk = commandLine.hasOption('m');
         boolean exp_JSN = commandLine.hasOption('J');   boolean exp_jsn = commandLine.hasOption('j');
 
         //
@@ -185,6 +192,7 @@ public class Main {
             File file = new File(filename);
 
             //create file and buffered reader
+            if(!file.isFile()){ return new ArrayList<String>(); }
             BufferedReader br = new BufferedReader(new FileReader(file));
 
             int i = 0;

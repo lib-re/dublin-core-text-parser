@@ -11,7 +11,7 @@ public class TXTExporter extends main.Exporter {
 
     @Override
     protected String processItemHeader(Item item){
-        return String.format("---- Item %d: %s ----", item.id, StringUtils.join(item.lsFilenames, ", "));
+        return String.format("---- Item %d: %s ---\n", item.id, StringUtils.join(item.lsFilenames, ", "));
     }
 
     @Override

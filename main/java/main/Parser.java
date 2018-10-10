@@ -147,7 +147,9 @@ public class Parser {
 
                 //check mode is valid, then log modeswitch
                 if(m.equals(mode.NULL)) {
-                    LOGGER.severe("'" +line + "' cannot be processed into an appropriate element.");
+                    String message = "'" +line + "' cannot be processed into an appropriate element.";
+                    LOGGER.severe(message);
+                    //TODO add to warnings
                 }else {
                     LOGGER.info(String.format("Mode switched from %s to %s.", this.current_mode, m));
                     this.current_mode = m;

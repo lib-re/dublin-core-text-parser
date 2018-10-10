@@ -83,7 +83,6 @@ public class Contributor extends Element {
      * TODO figure out what all should or can be done at this stage to make this better formatted.
      */
     private static String determineName(String valueText) {
-
         return processName(valueText);
     }
 

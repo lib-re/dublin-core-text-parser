@@ -29,7 +29,6 @@ public class CSVExporter extends main.Exporter{
     protected String processItemHeader(Item item){
         String filenames = StringUtils.join(item.lsFilenames, "||");
         return String.format("%d,\"%s\",", item.id, filenames);
-
     }
 
     @Override
